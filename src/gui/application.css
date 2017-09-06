@@ -1,4 +1,4 @@
-.list-view {
+.list-view, .scroll-pane {
 	-fx-background-insets: 0;
  	-fx-padding: 0;
 }
