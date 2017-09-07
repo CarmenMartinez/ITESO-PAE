@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<BorderPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HomeController">
+   <center>
+      <SplitPane dividerPositions="0.5" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0">
+               <children>
+                  <Button fx:id="buttonAddFolder" mnemonicParsing="false" onAction="#addFolder" text="+" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                  <ListView fx:id="listViewFolders" layoutX="23.0" layoutY="55.0" prefHeight="622.0" prefWidth="348.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Button fx:id="buttonAddTask" layoutX="348.0" layoutY="17.0" mnemonicParsing="false" onAction="#addTask" text="+" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                  <ScrollPane layoutX="16.0" layoutY="55.0" prefHeight="623.0" prefWidth="359.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0">
+                     <content>
+                        <AnchorPane fx:id="anchorPaneTasks" prefHeight="790.0" prefWidth="477.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="274.0" layoutX="62.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3a5e80" height="200.0" layoutX="33.0" layoutY="349.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="104.0" layoutY="637.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#613535" height="374.0" layoutX="277.0" layoutY="93.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </ScrollPane>
+               </children></AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>

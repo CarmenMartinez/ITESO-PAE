@@ -1,0 +1,22 @@
+.list-view, .scroll-pane {
+	-fx-background-insets: 0;
+ 	-fx-padding: 0;
+}
+
+.list-view .list-cell {
+	-fx-alignment: center;
+	-fx-cell-size: 70px;
+}
+
+.list-view .list-cell:even {
+	-fx-background-color: #f4f4f4;
+}
+
+.list-view .list-cell:odd {
+	-fx-background-color: #f4f4f4;
+}
+
+.folder {
+	-fx-min-width: 250px;
+	-fx-min-height: 50px;
+}
