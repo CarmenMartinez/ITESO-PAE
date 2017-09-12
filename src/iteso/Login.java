@@ -1,8 +1,4 @@
 package iteso;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -53,8 +49,8 @@ public class Login extends Application {
 	}
 
 	/*public static void main(String[] args) {
-	launch(args);
-}*/
+		launch(args);
+	}*/
 
 }
 
