@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane prefHeight="235.0" prefWidth="240.0">
          <children>
-            <TextField layoutX="35.0" layoutY="84.0" promptText="Nombre" maxWidth="Double.MAX_VALUE" />
+            <TextField layoutX="35.0" layoutY="84.0" promptText="Nombre" />
             <ImageView fitHeight="57.0" fitWidth="200.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-            <TextField layoutX="35.0" layoutY="134.0" promptText="Contraseña" maxWidth="Double.MAX_VALUE" />
+            <TextField layoutX="35.0" layoutY="134.0" promptText="Contraseña" />
             <Button layoutX="35.0" layoutY="184.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="170.0" text="Log In" />
          </children>
       </Pane>
