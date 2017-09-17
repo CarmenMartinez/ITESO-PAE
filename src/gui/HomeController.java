@@ -12,13 +12,21 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
 import model.Folder;
 import model.Task;
@@ -31,6 +39,8 @@ public class HomeController implements Initializable {
 
 	@FXML private AnchorPane anchorPaneTasks;
 
+	@FXML private Rectangle rectangle1;
+
 	private ObservableList<Folder> folders;
 	private ObservableList<Task> tasks;
 
@@ -42,8 +52,26 @@ public class HomeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initFolders();
-
+		final Delta dragDelta = new Delta();
+		rectangle1.setOnMousePressed(new EventHandler<MouseEvent>() {
+			  @Override public void handle(MouseEvent mouseEvent) {
+			    dragDelta.x = rectangle1.getLayoutX() - mouseEvent.getSceneX();
+			    dragDelta.y = rectangle1.getLayoutY() - mouseEvent.getSceneY();
+			  }
+			});
+		rectangle1.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			  @Override public void handle(MouseEvent mouseEvent) {
+				  Bounds bounds = anchorPaneTasks.getLayoutBounds();
+				  double targetX = mouseEvent.getSceneX() + dragDelta.x;
+				  double targetY = mouseEvent.getSceneY() + dragDelta.y;
+				  if (bounds.contains(targetX, targetY)) {
+					  rectangle1.setLayoutX(targetX);
+				  	rectangle1.setLayoutY(targetY);
+				  }
+			  }
+			});
 	}
+	class Delta { double x, y; }
 
 	@FXML public void addFolder(ActionEvent event) {
 
