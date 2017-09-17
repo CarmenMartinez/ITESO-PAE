@@ -9,19 +9,19 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HomeController">
+<BorderPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.HomeController">
    <center>
       <SplitPane dividerPositions="0.5" BorderPane.alignment="CENTER">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
-                  <Button fx:id="buttonAddFolder" mnemonicParsing="false" onAction="#addFolder" text="+" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                  <Button mnemonicParsing="false" onAction="#addFolder" text="+" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
                   <ListView fx:id="listViewFolders" layoutX="23.0" layoutY="55.0" prefHeight="622.0" prefWidth="348.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button fx:id="buttonAddTask" layoutX="348.0" layoutY="17.0" mnemonicParsing="false" onAction="#addTask" text="+" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                  <Button layoutX="348.0" layoutY="17.0" mnemonicParsing="false" onAction="#addTask" text="+" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
                   <ScrollPane layoutX="16.0" layoutY="55.0" prefHeight="623.0" prefWidth="359.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0">
                      <content>
                         <AnchorPane fx:id="anchorPaneTasks" prefHeight="790.0" prefWidth="477.0">
