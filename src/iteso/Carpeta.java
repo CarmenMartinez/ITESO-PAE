@@ -24,7 +24,7 @@ public class Carpeta extends Application {
 		            @Override
 		            public void handle(ActionEvent event) {
 		            	Alert alert = new Alert(AlertType.ERROR);
-                        alert.setHeaderText("Entrada inválida. Por favor ingresa números reales.");
+                        alert.setHeaderText("Entrada invï¿½lida. Por favor ingresa nï¿½meros reales.");
                         alert.show();
 		            }
 		     };
