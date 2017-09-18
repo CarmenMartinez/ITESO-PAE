@@ -25,12 +25,12 @@
     </plugins>
   </build>
   <dependencyManagement>
-  <dependencies>
+    <dependencies>
 	  <dependency>
-	  	<groupId>org.jfxtras</groupId>
-	  	<artifactId>jfxtras-all</artifactId>
-	  	<version>8.0-r1-SNAPSHOT</version>
+	    <groupId>org.jfxtras</groupId>
+	    <artifactId>jfxtras-all</artifactId>
+	    <version>8.0-r1-SNAPSHOT</version>
   	  </dependency>
-  	</dependencies>
+    </dependencies>
   </dependencyManagement>
 </project>
