@@ -31,7 +31,6 @@ public class HomeController implements Initializable {
     	tasks = FXCollections.observableArrayList();
 	}
 
-	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initFolders();
 	}
@@ -56,7 +55,6 @@ public class HomeController implements Initializable {
 		listViewFolders.setSelectionModel(null);
 		listViewFolders.setCellFactory(new Callback<ListView<Folder>,
 	            ListCell<Folder>>() {
-	                @Override
 	                public ListCell<Folder> call(ListView<Folder> list) {
 	                    return new FolderCell();
 	                }

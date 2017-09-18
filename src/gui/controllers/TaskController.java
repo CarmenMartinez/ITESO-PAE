@@ -15,7 +15,6 @@ public class TaskController implements Initializable {
 	@FXML private TextArea textAreaBody, textAreaNote;
 
 
-	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 	}
