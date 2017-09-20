@@ -1,4 +1,4 @@
-package gui;
+package gui.views;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,7 +11,7 @@ import model.Folder;
 public class FolderCell extends ListCell<Folder> {
 
 	@Override
-    public void updateItem(Folder folder, boolean empty) {
+    public void updateItem(final Folder folder, boolean empty) {
         super.updateItem(folder, empty);
 
         if (folder == null) { return; }
@@ -21,7 +21,6 @@ public class FolderCell extends ListCell<Folder> {
         button.getStyleClass().add("folder");
         button.setOnAction(new EventHandler<ActionEvent>() {
 
-			@Override
 			public void handle(ActionEvent event) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setHeaderText("Seleccionaste el folder: " + folder.getName());

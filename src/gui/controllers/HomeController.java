@@ -1,11 +1,9 @@
-package gui;
+package gui.controllers;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import gui.views.FolderCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,27 +11,17 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
-import javafx.scene.Cursor;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
 import model.Folder;
 import model.Task;
+import utils.Utils;
 
 public class HomeController implements Initializable {
-
-	@FXML private Button buttonAddFolder, buttonAddTask;
 
 	@FXML private ListView<Folder> listViewFolders;
 
@@ -49,18 +37,17 @@ public class HomeController implements Initializable {
     	tasks = FXCollections.observableArrayList();
 	}
 
-	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initFolders();
 		final Delta dragDelta = new Delta();
 		rectangle1.setOnMousePressed(new EventHandler<MouseEvent>() {
-			  @Override public void handle(MouseEvent mouseEvent) {
+			  public void handle(MouseEvent mouseEvent) {
 			    dragDelta.x = rectangle1.getLayoutX() - mouseEvent.getSceneX();
 			    dragDelta.y = rectangle1.getLayoutY() - mouseEvent.getSceneY();
 			  }
 			});
 		rectangle1.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			  @Override public void handle(MouseEvent mouseEvent) {
+			  public void handle(MouseEvent mouseEvent) {
 				  Bounds bounds = anchorPaneTasks.getLayoutBounds();
 				  double targetX = mouseEvent.getSceneX() + dragDelta.x;
 				  double targetY = mouseEvent.getSceneY() + dragDelta.y;
@@ -74,11 +61,11 @@ public class HomeController implements Initializable {
 	class Delta { double x, y; }
 
 	@FXML public void addFolder(ActionEvent event) {
-
+		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder");
 	}
 
 	@FXML public void addTask(ActionEvent event) {
-
+		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task");
 	}
 
 	private void initFolders() {
@@ -93,7 +80,6 @@ public class HomeController implements Initializable {
 		listViewFolders.setSelectionModel(null);
 		listViewFolders.setCellFactory(new Callback<ListView<Folder>,
 	            ListCell<Folder>>() {
-	                @Override
 	                public ListCell<Folder> call(ListView<Folder> list) {
 	                    return new FolderCell();
 	                }
