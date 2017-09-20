@@ -16,7 +16,6 @@ public class FolderController implements Initializable {
 
 	@FXML private CheckBox checkBoxFavorite;
 
-	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 	}
