@@ -11,7 +11,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		//Utils.createWindow(primaryStage, Main.this, "./fxml/Home.fxml", "TasksFX", "./css/home.css");
-		Utils.createWindow(primaryStage, Main.this, "./fxml/LoginScreen.fxml", "TasksFX", "./css/loginScreen.css");
+		Utils.createWindow(primaryStage, Main.this, "./fxml/Task.fxml", "TasksFX", "./css/task.css");
 	}
 
 	public static void main(String[] args) {
