@@ -56,11 +56,11 @@ public class HomeController implements Initializable {
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
-		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler);
+		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css");
 	}
 
 	@FXML public void addTask(ActionEvent event) {
-		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", tasksHandler);
+		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", tasksHandler, "../css/task.css");
 	}
 
 	private void initFolders() {
