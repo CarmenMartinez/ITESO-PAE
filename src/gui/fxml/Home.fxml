@@ -26,7 +26,7 @@
                      <content>
                         <AnchorPane fx:id="anchorPaneTasks" prefHeight="790.0" prefWidth="477.0">
                            <children>
-                              <Rectangle fx:id="rectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="274.0" layoutX="62.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                              <Rectangle fx:id="rectangle1" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="274.0" layoutX="0.0" layoutY="0.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3a5e80" height="200.0" layoutX="33.0" layoutY="349.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="104.0" layoutY="637.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#613535" height="374.0" layoutX="277.0" layoutY="93.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />

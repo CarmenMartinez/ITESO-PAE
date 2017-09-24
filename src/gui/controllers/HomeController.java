@@ -44,8 +44,16 @@ public class HomeController implements Initializable {
 			  public void handle(MouseEvent mouseEvent) {
 			    dragDelta.x = rectangle1.getLayoutX() - mouseEvent.getSceneX();
 			    dragDelta.y = rectangle1.getLayoutY() - mouseEvent.getSceneY();
+			    rectangle1.setId("selected-task");
+			    rectangle1.toFront();
 			  }
 			});
+		rectangle1.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+			public void handle(MouseEvent event) {
+				rectangle1.setId(null);
+			}
+		});
 		rectangle1.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			  public void handle(MouseEvent mouseEvent) {
 				  Bounds bounds = anchorPaneTasks.getLayoutBounds();

@@ -20,3 +20,8 @@
 	-fx-min-width: 250px;
 	-fx-min-height: 50px;
 }
+
+#selected-task {
+	-fx-stroke: #FFFF46;
+	-fx-stroke-width: 10px;
+}
