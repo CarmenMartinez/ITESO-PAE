@@ -5,13 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Utils {
 
-	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, String cssLocation, Double sceneWidth, Double sceneHeight) {
+	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, Double sceneWidth, Double sceneHeight) {
         try {
-        	Pane root = (Pane) FXMLLoader.load(parent.getClass().getResource(fxmlLocation));
+        	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getResource(fxmlLocation));
+        	Pane root = (Pane) fxmlLoader.load();
+//        	ParentController controller = (ParentController) fxmlLoader.getController();
             Stage targetStage = (stage != null) ? stage : new Stage();
             targetStage.setTitle(sceneTitle);
             Scene scene = (sceneWidth == null || sceneHeight == null)
@@ -22,6 +25,10 @@ public class Utils {
             	scene.getStylesheets().add(parent.getClass().getResource(cssLocation).toExternalForm());
             }
 
+            if (stage == null) {
+            	targetStage.initModality(Modality.APPLICATION_MODAL);
+            	targetStage.setUserData(userData);
+            }
             targetStage.setScene(scene);
             targetStage.show();
         }
@@ -30,12 +37,12 @@ public class Utils {
         }
 	}
 
-	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle) {
-		createWindow(stage, parent, fxmlLocation, sceneTitle, null, null, null);
+	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData) {
+		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, null, null, null);
 	}
 
-	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, String cssLocation) {
-		createWindow(stage, parent, fxmlLocation, sceneTitle, cssLocation, null, null);
+	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation) {
+		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, cssLocation, null, null);
 	}
 
 	public static void closeWindow(ActionEvent event) {

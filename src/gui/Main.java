@@ -10,8 +10,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		//Utils.createWindow(primaryStage, Main.this, "./fxml/Home.fxml", "TasksFX", "./css/home.css");
-		Utils.createWindow(primaryStage, Main.this, "./fxml/Folder.fxml", "TasksFX", "./css/folder.css");
+		Utils.createWindow(primaryStage, Main.this, "./fxml/Home.fxml", "TasksFX", null, "./css/home.css");
 	}
 
 	public static void main(String[] args) {
