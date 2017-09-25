@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import gui.views.FolderCell;
+import interfaces.FolderHandler;
+import interfaces.TasksHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +29,8 @@ public class HomeController implements Initializable {
 
 	@FXML private AnchorPane anchorPaneTasks;
 
-	@FXML private Rectangle rectangle1;
+	private FolderHandler folderHandler;
+	private TasksHandler tasksHandler;
 
 	private ObservableList<Folder> folders;
 	private ObservableList<Task> tasks;
@@ -35,12 +38,27 @@ public class HomeController implements Initializable {
     public HomeController() {
     	folders = FXCollections.observableArrayList();
     	tasks = FXCollections.observableArrayList();
+
+    	folderHandler = new FolderHandler() {
+
+			public void addFolder(Folder folder) {
+				folders.add(folder);
+			}
+		};
+
+		tasksHandler = new TasksHandler() {
+
+			public void addTask(Task task) {
+				tasks.add(task);
+			}
+
+		};
 	}
 
 	public void initialize(URL location, ResourceBundle resources) {
 		initFolders();
 		final Delta dragDelta = new Delta();
-		rectangle1.setOnMousePressed(new EventHandler<MouseEvent>() {
+		/*rectangle1.setOnMousePressed(new EventHandler<MouseEvent>() {
 			  public void handle(MouseEvent mouseEvent) {
 			    dragDelta.x = rectangle1.getLayoutX() - mouseEvent.getSceneX();
 			    dragDelta.y = rectangle1.getLayoutY() - mouseEvent.getSceneY();
@@ -64,25 +82,23 @@ public class HomeController implements Initializable {
 				  	rectangle1.setLayoutY(targetY);
 				  }
 			  }
-			});
+			});*/
 	}
 	class Delta { double x, y; }
 
 	@FXML public void addFolder(ActionEvent event) {
-		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder");
+		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css");
 	}
 
 	@FXML public void addTask(ActionEvent event) {
-		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task");
+		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", tasksHandler, "../css/task.css");
 	}
 
 	private void initFolders() {
 		folders.addAll(
-				new Folder("Tareas"), new Folder("Peliculas por ver"), new Folder("Mis imagenes"),
-				new Folder("Tareas"), new Folder("Peliculas por ver"), new Folder("Mis imagenes"),
-				new Folder("Tareas"), new Folder("Peliculas por ver"), new Folder("Mis imagenes"),
-				new Folder("Tareas"), new Folder("Peliculas por ver"), new Folder("Mis imagenes"),
-				new Folder("Tareas"), new Folder("Peliculas por ver"), new Folder("Mis imagenes")
+				new Folder("Tareas"),
+				new Folder("Peliculas por ver"),
+				new Folder("Mis imagenes")
 		);
 		listViewFolders.setItems(folders);
 		listViewFolders.setSelectionModel(null);
