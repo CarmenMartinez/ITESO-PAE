@@ -18,7 +18,7 @@ public class Folder {
 	}
 
 	public void setName(String name) {
-		this.name.set(name);;
+		this.name.set(name);
 	}
 
 }
