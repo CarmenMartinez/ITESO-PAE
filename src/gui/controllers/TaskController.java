@@ -28,11 +28,11 @@ public class TaskController implements Initializable {
 		if (isValidData() && userData != null && userData instanceof TasksHandler) {
 			try {
 				((TasksHandler) userData).addTask(new Task(textFieldTitle.getText(),textAreaBody.getText()));
+				Utils.closeWindow(event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		Utils.closeWindow(event);
 	}
 
 	@FXML public void cancel(ActionEvent event) {
@@ -40,7 +40,7 @@ public class TaskController implements Initializable {
 	}
 	
 	private boolean isValidData() {
-		return textFieldTitle.getText().length() > 0;
+		return (textFieldTitle.getText().length() > 0) && (textAreaBody.getText().length() > 0);
 	}
 
 }
