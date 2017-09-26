@@ -1,12 +1,15 @@
 package utils;
 
+import interfaces.WindowState;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Utils {
 
@@ -14,7 +17,6 @@ public class Utils {
         try {
         	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getResource(fxmlLocation));
         	Pane root = (Pane) fxmlLoader.load();
-//        	ParentController controller = (ParentController) fxmlLoader.getController();
             Stage targetStage = (stage != null) ? stage : new Stage();
             targetStage.setTitle(sceneTitle);
             Scene scene = (sceneWidth == null || sceneHeight == null)
@@ -28,6 +30,16 @@ public class Utils {
             if (stage == null) {
             	targetStage.initModality(Modality.APPLICATION_MODAL);
             	targetStage.setUserData(userData);
+            	targetStage.addEventHandler(WindowEvent.WINDOW_SHOWN, new EventHandler<WindowEvent>() {
+
+					@Override
+					public void handle(WindowEvent event) {
+						if (fxmlLoader.getController() instanceof WindowState) {
+							((WindowState) fxmlLoader.getController()).onReady();
+						}
+					}
+
+            	});
             }
             targetStage.setScene(scene);
             targetStage.show();

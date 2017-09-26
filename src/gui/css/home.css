@@ -1,7 +1,6 @@
-.button
- {
+.button{
     -fx-background-color: transparent;
- }
+}
 
 .button:hover {
 	-fx-background-color: #D8D8D8;
@@ -42,7 +41,14 @@
 	-fx-min-height: 50px;
 }
 
-#selected-task {
-	-fx-stroke: #FFFF46;
-	-fx-stroke-width: 10px;
+.button-edit-task{
+ 	-fx-color: #457fd8;
+}
+
+.button-edit-task:hover {
+	-fx-background-color: #4588D9;
+}
+
+.task-description {
+	-fx-padding: 10px;
 }
