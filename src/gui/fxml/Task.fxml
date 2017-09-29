@@ -54,8 +54,8 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="textAreaBody" blendMode="SRC_ATOP" prefHeight="33.0" prefWidth="343.0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="TOP">
-                			 <GridPane.margin>
+                        <TextArea fx:id="textAreaBody" blendMode="SRC_OVER" prefHeight="33.0" prefWidth="343.0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="TOP">
+                           <GridPane.margin>
                               <Insets left="40.0" right="40.0" />
                            </GridPane.margin>
                         </TextArea>
@@ -90,7 +90,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextArea fx:id="textAreaNote" blendMode="SRC_ATOP" prefHeight="33.0" prefWidth="343.0" GridPane.columnSpan="3" GridPane.rowIndex="3" GridPane.rowSpan="2">
+                        <TextArea fx:id="textAreaNote" blendMode="SRC_OVER" prefHeight="33.0" prefWidth="343.0" GridPane.columnSpan="3" GridPane.rowIndex="3" GridPane.rowSpan="2">
                            <GridPane.margin>
                               <Insets left="40.0" right="40.0" />
                            </GridPane.margin>
