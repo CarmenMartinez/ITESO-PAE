@@ -1,6 +1,8 @@
 package gui.controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import gui.views.FolderCell;
@@ -21,9 +23,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import jfxtras.labs.scene.control.window.CloseIcon;
 import jfxtras.labs.scene.control.window.Window;
 import model.Folder;
 import model.Task;
@@ -43,6 +47,8 @@ public class HomeController implements Initializable {
 	private ObservableList<Folder> folders;
 	private ObservableList<Task> tasks;
 
+	private Folder currentFolder;
+
     public HomeController() {
     	folders = FXCollections.observableArrayList();
     	tasks = FXCollections.observableArrayList();
@@ -52,6 +58,18 @@ public class HomeController implements Initializable {
 			public void addFolder(Folder folder) {
 				folders.add(folder);
 			}
+
+			@Override
+			public void onFolderSelected(Folder folder) {
+				currentFolder = folder;
+				anchorPaneTasks.getChildren().clear();
+				List<Task> tasks = folder.getTasks();
+				if (tasks == null) return;
+				tasks.forEach(task -> {
+					anchorPaneTasks.getChildren().add(createTaskUI(task));
+				});
+			}
+
 		};
 
 		tasksHandler = new TasksHandler() {
@@ -72,6 +90,7 @@ public class HomeController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		initFolders();
 		initTasks();
+		folderHandler.onFolderSelected(folders.get(0));
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
@@ -97,6 +116,7 @@ public class HomeController implements Initializable {
 						updateTaskUI(task);
 					} else if (change.wasAdded()) {
 						Task task = change.getAddedSubList().get(0);
+						currentFolder.getTasks().add(task);
 						anchorPaneTasks.getChildren().add(createTaskUI(task));
 					} else if (change.wasRemoved()) {
 						System.out.println("REMO");
@@ -108,9 +128,14 @@ public class HomeController implements Initializable {
 	}
 
 	private void initFolders() {
+		List<Task> tasks1 = new ArrayList<Task>();
+		tasks1.add(new Task("Tarea1", "Hacerla hoy"));
+		tasks1.add(new Task("Tarea 2", "Ayer"));
+		List<Task> tasks2 = new ArrayList<Task>();
+		tasks2.add(new Task("Presagio", "Hoy"));
 		folders.addAll(
-				new Folder("Tareas"),
-				new Folder("Peliculas por ver"),
+				new Folder("Tareas", tasks1),
+				new Folder("Peliculas por ver", tasks2),
 				new Folder("Mis imagenes")
 		);
 		listViewFolders.setItems(folders);
@@ -118,7 +143,7 @@ public class HomeController implements Initializable {
 		listViewFolders.setCellFactory(new Callback<ListView<Folder>,
 	            ListCell<Folder>>() {
 	                public ListCell<Folder> call(ListView<Folder> list) {
-	                    return new FolderCell();
+	                    return new FolderCell(folderHandler);
 	                }
 	            }
 	        );
@@ -129,6 +154,12 @@ public class HomeController implements Initializable {
 		window.setPrefSize(task.getWidth(), task.getHeight());
 		window.setLayoutX(task.getXPosition());
 		window.setLayoutY(task.getYPosition());
+		CloseIcon closeIcon = new CloseIcon(window);
+		closeIcon.addEventHandler(
+			MouseEvent.MOUSE_PRESSED,
+			(MouseEvent mouseEvent) -> { System.out.println("Remove Task!"); }
+		);
+		window.getRightIcons().add(closeIcon);
 
 		Label labelDescription = new Label(task.getDescription());
 		Button buttonEdit = new Button("Editar");

@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDateTime;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,25 +11,31 @@ public class Task {
 
 	private StringProperty title;
 	private StringProperty description;
+	private LocalDateTime reminderDate;
 	private String color;
 
 	private NumberAttributes delta, size;
 
-	public Task(int id, String title, String description, double xPosition, double yPosition, double width, double height, String color) {
+	public Task(int id, String title, String description, double xPosition, double yPosition, double width, double height, String color, LocalDateTime reminderDate) {
 		this.id = id;
 		this.title = new SimpleStringProperty(title);
 		this.description = new SimpleStringProperty(description);
 		this.delta = new NumberAttributes(xPosition, yPosition);
 		this.size = new NumberAttributes(width,  height);
 		this.color = color;
+		this.reminderDate = reminderDate;
 	}
 
-	public Task(String title, String description, double xPosition, double yPosition, double width, double height, String color) {
-		this((int) Math.random(), title, description, xPosition, yPosition, width, height, color);
+	public Task(String title, String description, double xPosition, double yPosition, double width, double height, String color, LocalDateTime reminderDate) {
+		this((int) Math.random(), title, description, xPosition, yPosition, width, height, color, reminderDate);
 	}
 
 	public Task(String title, String description) {
-		this(title, description, 10, 10, 200, 120, "#f4f4f4");
+		this(title, description, 10, 10, 200, 120, "#f4f4f4", null);
+	}
+
+	public Task(String title, String description, LocalDateTime reminderDate) {
+		this(title, description, 10, 10, 200, 120, "#f4f4f4", reminderDate);
 	}
 
 	public int getId() {
@@ -90,6 +98,24 @@ public class Task {
 		this.color = color;
 	}
 
+	public void setReminderDate(LocalDateTime reminderDate) {
+		this.reminderDate = reminderDate;
+	}
+
+	public LocalDateTime getReminderDate() {
+		return reminderDate;
+	}
+
+	public boolean isReminder() {
+		return reminderDate != null;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Task)) return false;
+		return ((Task) obj).getId() == this.id;
+	}
+
 	private class NumberAttributes {
 		double x, y;
 
@@ -97,12 +123,6 @@ public class Task {
 			this.x = x;
 			this.y = y;
 		}
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof Task)) return false;
-		return ((Task) obj).getId() == this.id;
 	}
 
 }

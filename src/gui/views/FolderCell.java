@@ -1,11 +1,11 @@
 package gui.views;
 
+import interfaces.FolderHandler;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +13,12 @@ import javafx.scene.control.Alert.AlertType;
 import model.Folder;
 
 public class FolderCell extends ListCell<Folder> {
+
+	private FolderHandler folderHandler;
+
+	public FolderCell(FolderHandler folderHandler) {
+		this.folderHandler = folderHandler;
+	}
 
 	@Override
     public void updateItem(final Folder folder, boolean empty) {
@@ -32,9 +38,7 @@ public class FolderCell extends ListCell<Folder> {
         button.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setHeaderText("Seleccionaste el folder: " + folder.getName());
-				alert.show();
+				folderHandler.onFolderSelected(folder);
 			}
 		});
 
