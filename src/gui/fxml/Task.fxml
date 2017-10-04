@@ -20,7 +20,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Texto">
                <content>
@@ -44,7 +44,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="textFieldTitle" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <TextField fx:id="textTextFieldTitle" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets left="40.0" right="40.0" />
                            </GridPane.margin>
@@ -54,7 +54,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="textAreaBody" blendMode="SRC_OVER" prefHeight="33.0" prefWidth="343.0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="TOP">
+                        <TextArea fx:id="textTextAreaBody" blendMode="SRC_OVER" prefHeight="33.0" prefWidth="343.0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="TOP">
                            <GridPane.margin>
                               <Insets left="40.0" right="40.0" />
                            </GridPane.margin>
@@ -90,7 +90,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextArea fx:id="textAreaNote" blendMode="SRC_OVER" prefHeight="33.0" prefWidth="343.0" GridPane.columnSpan="3" GridPane.rowIndex="3" GridPane.rowSpan="2">
+                        <TextArea fx:id="reminderTextAreaBody" blendMode="SRC_OVER" prefHeight="33.0" prefWidth="343.0" GridPane.columnSpan="3" GridPane.rowIndex="3" GridPane.rowSpan="2">
                            <GridPane.margin>
                               <Insets left="40.0" right="40.0" />
                            </GridPane.margin>
@@ -100,7 +100,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="textFieldDate" alignment="TOP_LEFT" promptText="DD/MM/YYY  HH:ii:ss" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                        <TextField fx:id="reminderTextFieldDate" alignment="TOP_LEFT" promptText="DD/MM/YYY  HH:ii:ss" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                            <GridPane.margin>
                               <Insets left="40.0" right="40.0" />
                            </GridPane.margin>
@@ -128,7 +128,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField GridPane.columnSpan="3" GridPane.valignment="BOTTOM">
+                        <TextField fx:id="reminderTextFieldTitle" GridPane.columnSpan="3" GridPane.valignment="BOTTOM">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="40.0" right="40.0" />
                            </GridPane.margin>
