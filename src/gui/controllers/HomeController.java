@@ -76,6 +76,7 @@ public class HomeController implements Initializable {
 
 			public void addFolder(Folder folder) {
 				folders.add(folder);
+				onFolderSelected(folder);
 			}
 
 			@Override
