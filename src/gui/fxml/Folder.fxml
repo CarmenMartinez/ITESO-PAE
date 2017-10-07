@@ -9,15 +9,15 @@
 
 <AnchorPane id="AnchorPane" prefHeight="196.0" prefWidth="174.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="gui.controllers.FolderController">
   <children>
-    <Label layoutX="28.0" layoutY="19.0" text="Name:">
+    <Label layoutX="28.0" layoutY="19.0" text="%folder_name:">
       <font>
         <Font size="16.0"/>
       </font>
     </Label>
     <TextField fx:id="textFieldFolderName" layoutX="21.0" layoutY="57.0" prefWidth="124.0" />
-    <Label layoutX="23.0" layoutY="96.0" text="Favorite:" />
+    <Label layoutX="23.0" layoutY="96.0" text="%folder_favorite:" />
     <CheckBox fx:id="checkBoxFavorite" layoutX="128.0" layoutY="102.0" mnemonicParsing="false" text="" />
-    <Button layoutX="24.0" layoutY="155.0" mnemonicParsing="false" text="Accept" onAction="#accept" />
-    <Button layoutX="96.0" layoutY="155.0" mnemonicParsing="false" text="Cancel" onAction="#cancel" />
+    <Button layoutX="24.0" layoutY="155.0" mnemonicParsing="false" text="%folder_accept" onAction="#accept" />
+    <Button layoutX="96.0" layoutY="155.0" mnemonicParsing="false" text="%folder_cancel" onAction="#cancel" />
   </children>
 </AnchorPane>

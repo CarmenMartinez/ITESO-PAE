@@ -1,6 +1,8 @@
 package gui;
 
 
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import utils.Utils;
@@ -11,6 +13,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		//primaryStage.setMaximized(true);
+		//ResourceBundle bundle = ResourceBundle.getBundle("resources.home.propierties");
 		Utils.createWindow(primaryStage, Main.this, "./fxml/Home.fxml", "TasksFX", null, "./css/home.css");
 
 
