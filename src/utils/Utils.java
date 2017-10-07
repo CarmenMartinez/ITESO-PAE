@@ -17,7 +17,7 @@ public class Utils {
 
 	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, Double sceneWidth, Double sceneHeight) {
         try {
-        	String resourceLocation = "resources.UIResources_en_MX";
+        	String resourceLocation = "resources.i18n.UIResources_en_MX";
         	ResourceBundle bundle = ResourceBundle.getBundle(resourceLocation);
         	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getResource(fxmlLocation),bundle);
         	Pane root = (Pane) fxmlLoader.load();
