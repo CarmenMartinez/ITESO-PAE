@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import interfaces.WindowState;
@@ -17,9 +18,10 @@ public class Utils {
 
 	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, Double sceneWidth, Double sceneHeight) {
         try {
-        	String resourceLocation = "resources.i18n.UIResources_en_MX";
-        	ResourceBundle bundle = ResourceBundle.getBundle(resourceLocation);
-        	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getResource(fxmlLocation),bundle);
+        	Locale locale = Locale.getDefault();
+        	String resourceLocation = "resources.i18n.UIResources";
+        	ResourceBundle bundle = ResourceBundle.getBundle(resourceLocation, locale);
+        	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getClassLoader().getResource(fxmlLocation),bundle);
         	Pane root = (Pane) fxmlLoader.load();
             Stage targetStage = (stage != null) ? stage : new Stage();
             targetStage.setTitle(sceneTitle);
