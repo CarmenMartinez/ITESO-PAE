@@ -16,12 +16,12 @@ import javafx.stage.WindowEvent;
 
 public class Utils {
 
-	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, Double sceneWidth, Double sceneHeight) {
+	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, Double sceneWidth, Double sceneHeight, ResourceBundle bundle) {
         try {
-        	Locale locale = Locale.getDefault();
-        	String resourceLocation = "resources.i18n.UIResources";
-        	ResourceBundle bundle = ResourceBundle.getBundle(resourceLocation, locale);
-        	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getClassLoader().getResource(fxmlLocation),bundle);
+        	//Locale locale = new Locale("es", "MX");
+        	//String resourceLocation = "resources.i18n.UIResources";
+        	//ResourceBundle bundle = ResourceBundle.getBundle(resourceLocation, locale);
+        	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getResource(fxmlLocation), bundle);
         	Pane root = (Pane) fxmlLoader.load();
             Stage targetStage = (stage != null) ? stage : new Stage();
             targetStage.setTitle(sceneTitle);
@@ -56,11 +56,11 @@ public class Utils {
 	}
 
 	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData) {
-		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, null, null, null);
+		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, null, null, null, null);
 	}
 
-	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation) {
-		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, cssLocation, null, null);
+	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, ResourceBundle bundle) {
+		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, cssLocation, null, null, bundle);
 	}
 
 	public static void closeWindow(ActionEvent event) {

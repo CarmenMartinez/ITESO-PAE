@@ -19,8 +19,8 @@ public class LoginController implements Initializable {
 	}
 
 	@FXML public void login(ActionEvent event) {
-		//ResourceBundle bundle = ResourceBundle.getBundle("resources.login.propierties");
-		Utils.createWindow(null, LoginController.this, "../fxml/Home.fxml", "TasksFX", null, "../css/home.css");
+		ResourceBundle bundle = ResourceBundle.getBundle("resources.i18n.login");
+		Utils.createWindow(null, LoginController.this, "../fxml/Home.fxml", "TasksFX", null, "../css/home.css", bundle);
 		Utils.closeWindow(event);
 	}
 

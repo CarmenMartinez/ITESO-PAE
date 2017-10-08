@@ -94,8 +94,8 @@ public class HomeController implements Initializable {
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
-		//ResourceBundle bundle = ResourceBundle.getBundle("resources.folder.propierties");
-		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css");
+		ResourceBundle bundle = ResourceBundle.getBundle("resources.i8n.folder");
+		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css", bundle);
 	}
 
 	@FXML public void addTask(ActionEvent event) {
@@ -104,8 +104,8 @@ public class HomeController implements Initializable {
 	}
 
 	private void openTaskWindow() {
-		//ResourceBundle bundle = ResourceBundle.getBundle("resources.task.propierties");
-		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css");
+		ResourceBundle bundle = ResourceBundle.getBundle("resources.i18n.task");
+		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css", bundle);
 	}
 
 	private void initTasks() {
