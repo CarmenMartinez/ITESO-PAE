@@ -94,7 +94,7 @@ public class HomeController implements Initializable {
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
-		ResourceBundle bundle = ResourceBundle.getBundle("resources.i8n.folder");
+		ResourceBundle bundle = ResourceBundle.getBundle("resources.i18n.folder");
 		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css", bundle);
 	}
 
