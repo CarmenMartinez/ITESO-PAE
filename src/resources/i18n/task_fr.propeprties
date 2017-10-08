@@ -1,0 +1,12 @@
+task_text = Texte
+task_title = Titre
+task_body = Corps
+task_accept = Accepter
+task_cancel = Annuler
+task_reminder = Rappel
+task_reminderDate = Date
+task_note = Note
+task_accept = Accepter
+task_cancel = Annuler
+task_reminderTitle = Titre
+task_reminderNote = Corps
