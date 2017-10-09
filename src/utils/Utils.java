@@ -16,12 +16,10 @@ import javafx.stage.WindowEvent;
 
 public class Utils {
 
-	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, Double sceneWidth, Double sceneHeight, ResourceBundle bundle) {
+	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, String bundleLocation, Double sceneWidth, Double sceneHeight) {
         try {
-        	//Locale locale = new Locale("es", "MX");
-        	//String resourceLocation = "resources.i18n.UIResources";
-        	//ResourceBundle bundle = ResourceBundle.getBundle(resourceLocation, locale);
-        	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getResource(fxmlLocation), bundle);
+        	ResourceBundle bundle = ResourceBundle.getBundle(bundleLocation);
+          	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getResource(fxmlLocation), bundle);
         	Pane root = (Pane) fxmlLoader.load();
             Stage targetStage = (stage != null) ? stage : new Stage();
             targetStage.setTitle(sceneTitle);
@@ -59,8 +57,12 @@ public class Utils {
 		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, null, null, null, null);
 	}
 
-	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, ResourceBundle bundle) {
-		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, cssLocation, null, null, bundle);
+	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation) {
+		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, cssLocation, null, null, null);
+	}
+
+	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, String bundleLocation) {
+		createWindow(stage, parent, fxmlLocation, sceneTitle, userData, cssLocation, bundleLocation, null, null);
 	}
 
 	public static void closeWindow(ActionEvent event) {

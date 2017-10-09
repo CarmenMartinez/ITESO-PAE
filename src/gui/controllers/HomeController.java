@@ -94,8 +94,7 @@ public class HomeController implements Initializable {
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
-		ResourceBundle bundle = ResourceBundle.getBundle("resources.i18n.folder");
-		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css", bundle);
+		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css", "resources.i18n.folder");
 	}
 
 	@FXML public void addTask(ActionEvent event) {
@@ -104,8 +103,7 @@ public class HomeController implements Initializable {
 	}
 
 	private void openTaskWindow() {
-		ResourceBundle bundle = ResourceBundle.getBundle("resources.i18n.task");
-		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css", bundle);
+		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css", "resources.i18n.task");
 	}
 
 	private void initTasks() {
@@ -164,7 +162,8 @@ public class HomeController implements Initializable {
 		window.getRightIcons().add(closeIcon);
 
 		Label labelDescription = new Label(task.getDescription());
-		Button buttonEdit = new Button("Editar");
+		ResourceBundle rb = ResourceBundle.getBundle("resources.i18n.task");
+		Button buttonEdit = new Button(rb.getString("task_edit"));
 		buttonEdit.setOnAction((event) -> {
 			window.toFront();
 			taskManager.setTask(task);
