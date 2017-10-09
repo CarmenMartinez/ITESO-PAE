@@ -15,13 +15,13 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#addFolder" text="%home_folderAdd" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                  <Button mnemonicParsing="false" onAction="#addFolder" text="%home_folder_add" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
                   <ListView fx:id="listViewFolders" layoutX="23.0" layoutY="55.0" prefHeight="622.0" prefWidth="348.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button layoutX="348.0" layoutY="17.0" mnemonicParsing="false" onAction="#addTask" text="%home_taskAdd" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                  <Button layoutX="348.0" layoutY="17.0" mnemonicParsing="false" onAction="#addTask" text="%home_task_add" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
                   <ScrollPane layoutX="16.0" layoutY="55.0" prefHeight="623.0" prefWidth="359.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0">
                      <content>
                         <AnchorPane fx:id="anchorPaneTasks" prefHeight="790.0" prefWidth="477.0">
