@@ -200,6 +200,8 @@ public class HomeController implements Initializable {
                     if (bounds.contains(x, y)) {
                     	window.setLayoutX(x);
                     	window.setLayoutY(y);
+                    	task.setXPosition(x);
+                    	task.setYPosition(y);
                     }
                 }
             }

@@ -27,7 +27,8 @@ public class Task {
 	}
 
 	public Task(String title, String description, double xPosition, double yPosition, double width, double height, String color, LocalDateTime reminderDate) {
-		this((int) Math.random(), title, description, xPosition, yPosition, width, height, color, reminderDate);
+		// TODO this random should not be here, remove when database is ready
+		this((int) Math.floor(Math.random() * 100000), title, description, xPosition, yPosition, width, height, color, reminderDate);
 	}
 
 	public Task(String title, String description) {
@@ -124,5 +125,12 @@ public class Task {
 			this.y = y;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "Task [id=" + id + ", title=" + title + ", description=" + description + "]";
+	}
+
+
 
 }
