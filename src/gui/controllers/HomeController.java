@@ -91,6 +91,20 @@ public class HomeController implements Initializable {
 				});
 			}
 
+			@Override
+			public void onFolderDeleted(Folder folder) {
+				int folderIndex = folders.indexOf(folder);
+				int foldersSize = folders.size();
+				folders.remove(folder);
+				if (foldersSize == 1) {
+					anchorPaneTasks.getChildren().clear();
+					return;
+				}
+				if (folder == currentFolder) {
+					onFolderSelected(folders.get(foldersSize - 1 == folderIndex ? folderIndex - 1 : folderIndex));
+				}
+			}
+
 		};
 
 		tasksHandler = new TasksHandler() {
