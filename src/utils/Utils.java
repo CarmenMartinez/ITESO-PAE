@@ -1,5 +1,6 @@
 package utils;
 
+import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -18,8 +19,8 @@ public class Utils {
 
 	public static void createWindow(Stage stage, Object parent, String fxmlLocation, String sceneTitle, Object userData, String cssLocation, String bundleLocation, Double sceneWidth, Double sceneHeight) {
         try {
-        	ResourceBundle bundle = ResourceBundle.getBundle(bundleLocation);
-          	FXMLLoader fxmlLoader = new FXMLLoader(parent.getClass().getResource(fxmlLocation), bundle);
+        	URL fxmlUrl = parent.getClass().getResource(fxmlLocation);
+        	FXMLLoader fxmlLoader = bundleLocation != null ? new FXMLLoader(fxmlUrl, ResourceBundle.getBundle(bundleLocation)) : new FXMLLoader(fxmlUrl);
         	Pane root = (Pane) fxmlLoader.load();
             Stage targetStage = (stage != null) ? stage : new Stage();
             targetStage.setTitle(sceneTitle);
