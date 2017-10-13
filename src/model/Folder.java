@@ -1,23 +1,22 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Folder {
 
 	private StringProperty name;
 	private IntegerProperty id;
-	private List<Task> tasks;
+	private ObservableList<Task> tasks;
 
 	public Folder(String name) {
 		this.name = new SimpleStringProperty(name);
 		if (tasks == null) {
-			tasks = new ArrayList<Task>();
+			tasks = FXCollections.observableArrayList();
 		}
 	}
 
@@ -26,12 +25,12 @@ public class Folder {
 		this.id = new SimpleIntegerProperty(id);
 	}
 
-	public Folder(int id, String name, List<Task> tasks) {
+	public Folder(int id, String name, ObservableList<Task> tasks) {
 		this(id, name);
 		this.tasks = tasks;
 	}
 
-	public Folder(String name, List<Task> tasks) {
+	public Folder(String name, ObservableList<Task> tasks) {
 		this(name);
 		this.tasks = tasks;
 	}
@@ -48,11 +47,11 @@ public class Folder {
 		return this.id.get();
 	}
 
-	public List<Task> getTasks() {
+	public ObservableList<Task> getTasks() {
 		return tasks;
 	}
 
-	public void setTasks(List<Task> tasks) {
+	public void setTasks(ObservableList<Task> tasks) {
 		this.tasks = tasks;
 	}
 

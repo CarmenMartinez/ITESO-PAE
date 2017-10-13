@@ -45,69 +45,15 @@ public class HomeController implements Initializable {
 	private TaskManager taskManager;
 
 	private ObservableList<Folder> folders;
-	private ObservableList<Task> tasks;
 
 	private Folder currentFolder;
 
+	private ListChangeListener<Task> tasksChangeListener;
+
     public HomeController() {
     	folders = FXCollections.observableArrayList();
-    	tasks = FXCollections.observableArrayList();
 
-    	folderHandler = new FolderHandler() {
-
-			public void addFolder(Folder folder) {
-				folders.add(folder);
-			}
-
-			@Override
-			public void onFolderSelected(Folder folder) {
-				currentFolder = folder;
-				anchorPaneTasks.getChildren().clear();
-				List<Task> tasks = folder.getTasks();
-				if (tasks == null) return;
-				tasks.forEach(task -> {
-					anchorPaneTasks.getChildren().add(createTaskUI(task));
-				});
-			}
-
-		};
-
-		tasksHandler = new TasksHandler() {
-
-			public void addTask(Task task) {
-				tasks.add(task);
-			}
-
-			@Override
-			public void updateTask(Task task) {
-				tasks.set(tasks.indexOf(task), task);
-			}
-
-		};
-		taskManager = new TaskManager().setTaskHandler(tasksHandler);
-	}
-
-	public void initialize(URL location, ResourceBundle resources) {
-		initFolders();
-		initTasks();
-		folderHandler.onFolderSelected(folders.get(0));
-	}
-
-	@FXML public void addFolder(ActionEvent event) {
-		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css");
-	}
-
-	@FXML public void addTask(ActionEvent event) {
-		taskManager.setTask(null);
-		openTaskWindow();
-	}
-
-	private void openTaskWindow() {
-		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css");
-	}
-
-	private void initTasks() {
-		tasks.addListener(new ListChangeListener<Task>() {
+    	tasksChangeListener = new ListChangeListener<Task>() {
 
 			public void onChanged(Change<? extends Task> change) {
 				while (change.next()) {
@@ -124,14 +70,88 @@ public class HomeController implements Initializable {
 				}
 			}
 
-		});
+		};
+
+    	folderHandler = new FolderHandler() {
+
+			public void addFolder(Folder folder) {
+				folders.add(folder);
+				onFolderSelected(folder);
+			}
+
+			@Override
+			public void onFolderSelected(Folder folder) {
+				currentFolder = folder;
+				initTasks(currentFolder);
+				anchorPaneTasks.getChildren().clear();
+				ObservableList<Task> tasks = folder.getTasks();
+				if (tasks == null) return;
+				tasks.forEach(task -> {
+					anchorPaneTasks.getChildren().add(createTaskUI(task));
+				});
+			}
+
+			@Override
+			public void onFolderDeleted(Folder folder) {
+				int folderIndex = folders.indexOf(folder);
+				int foldersSize = folders.size();
+				folders.remove(folder);
+				if (foldersSize == 1) {
+					anchorPaneTasks.getChildren().clear();
+					return;
+				}
+				if (folder == currentFolder) {
+					onFolderSelected(folders.get(foldersSize - 1 == folderIndex ? folderIndex - 1 : folderIndex));
+				}
+			}
+
+		};
+
+		tasksHandler = new TasksHandler() {
+
+			public void addTask(Task task) {
+				currentFolder.getTasks().add(task);
+			}
+
+			@Override
+			public void updateTask(Task task) {
+				List<Task> tasks = currentFolder.getTasks();
+				tasks.set(tasks.indexOf(task), task);
+			}
+
+		};
+		taskManager = new TaskManager().setTaskHandler(tasksHandler);
+	}
+
+	public void initialize(URL location, ResourceBundle resources) {
+		initFolders();
+		folderHandler.onFolderSelected(folders.get(0));
+	}
+
+	@FXML public void addFolder(ActionEvent event) {
+		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css");
+	}
+
+	@FXML public void addTask(ActionEvent event) {
+		taskManager.setTask(null);
+		openTaskWindow();
+	}
+
+	private void openTaskWindow() {
+		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css");
+	}
+
+	private void initTasks(Folder folder) {
+		if (folder == null || folder.getTasks() == null) { return; }
+		folder.getTasks().removeListener(tasksChangeListener);
+		folder.getTasks().addListener(tasksChangeListener);
 	}
 
 	private void initFolders() {
-		List<Task> tasks1 = new ArrayList<Task>();
+		ObservableList<Task> tasks1 = FXCollections.observableArrayList();
 		tasks1.add(new Task("Tarea1", "Hacerla hoy"));
 		tasks1.add(new Task("Tarea 2", "Ayer"));
-		List<Task> tasks2 = new ArrayList<Task>();
+		ObservableList<Task> tasks2 = FXCollections.observableArrayList();
 		tasks2.add(new Task("Presagio", "Hoy"));
 		folders.addAll(
 				new Folder("Tareas", tasks1),
@@ -194,6 +214,8 @@ public class HomeController implements Initializable {
                     if (bounds.contains(x, y)) {
                     	window.setLayoutX(x);
                     	window.setLayoutY(y);
+                    	task.setXPosition(x);
+                    	task.setYPosition(y);
                     }
                 }
             }
