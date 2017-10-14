@@ -189,7 +189,6 @@ public class HomeController implements Initializable {
 	      	    );
 		editIcon.setFitHeight(22);
 		editIcon.setFitWidth(22);
-		//Button buttonInfo = new Button("",imageView);
 
 		final ImageView infoIcon = new ImageView(
 	      	      new Image("/img/info.png")
