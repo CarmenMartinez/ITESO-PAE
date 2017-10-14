@@ -23,8 +23,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import jfxtras.labs.scene.control.window.CloseIcon;
@@ -181,22 +184,40 @@ public class HomeController implements Initializable {
 		);
 		window.getRightIcons().add(closeIcon);
 
+		final ImageView editIcon = new ImageView(
+	      	      new Image("/img/edit.png")
+	      	    );
+		editIcon.setFitHeight(22);
+		editIcon.setFitWidth(22);
+
+		final ImageView infoIcon = new ImageView(
+	      	      new Image("/img/info.png")
+	      	    );
+		infoIcon.setFitHeight(22);
+		infoIcon.setFitWidth(22);
+
 		Label labelDescription = new Label(task.getDescription());
-		Button buttonEdit = new Button("Editar");
+		Button buttonEdit = new Button("",editIcon);
+		Button buttonInfo = new Button("",infoIcon);
+
 		buttonEdit.setOnAction((event) -> {
 			window.toFront();
 			taskManager.setTask(task);
 			openTaskWindow();
 		});
-		buttonEdit.getStyleClass().add("button-edit-task");
+
+		buttonEdit.getStyleClass().add("buttons-task");
+		buttonInfo.getStyleClass().add("buttons-task");
 		ScrollPane scrollPane = new ScrollPane(labelDescription);
 		scrollPane.getStyleClass().add("task-description");
-		VBox vBox = new VBox(scrollPane, buttonEdit);
+		HBox hbox = new HBox(buttonEdit,buttonInfo);
+		hbox.setAlignment(Pos.BOTTOM_RIGHT);
+		VBox vBox = new VBox(scrollPane, hbox);
 		vBox.setAlignment(Pos.TOP_CENTER);
 		vBox.setSpacing(10);
 		vBox.setStyle(task.getColor());
-
 		window.setContentPane(vBox);
+
 		window.setBoundsListenerEnabled(false);
 		window.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
             public void changed(ObservableValue<? extends Bounds> ov, Bounds t, Bounds t1) {
