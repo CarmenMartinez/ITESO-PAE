@@ -15,14 +15,12 @@ public class Folder {
 
 	public Folder(String name) {
 		this.name = new SimpleStringProperty(name);
-		if (tasks == null) {
-			tasks = FXCollections.observableArrayList();
-		}
 	}
 
 	public Folder(int id, String name) {
 		this(name);
 		this.id = new SimpleIntegerProperty(id);
+		tasks = FXCollections.observableArrayList();
 	}
 
 	public Folder(int id, String name, ObservableList<Task> tasks) {
