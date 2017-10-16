@@ -19,7 +19,7 @@ public class LoginController implements Initializable {
 	}
 
 	@FXML public void login(ActionEvent event) {
-		Utils.createWindow(null, LoginController.this, "../fxml/Home.fxml", "TasksFX", null, "../css/home.css");
+		Utils.createWindow(null, LoginController.this, "../fxml/Home.fxml", "TasksFX", null, "../css/home.css", "resources.i18n.home");
 		Utils.closeWindow(event);
 	}
 

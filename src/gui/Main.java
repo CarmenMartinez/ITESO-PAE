@@ -1,6 +1,8 @@
 package gui;
 
 
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import utils.Utils;
@@ -11,19 +13,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		//primaryStage.setMaximized(true);
-		Utils.createWindow(primaryStage, Main.this, "./fxml/Home.fxml", "TasksFX", null, "./css/home.css");
+		Utils.createWindow(primaryStage, Main.this, "./fxml/Home.fxml", "TasksFX", null, "./css/home.css", "resources.i18n.home");
 
-
-		/*primaryStage.showingProperty().addListener(new ChangeListener<Boolean>() {
-
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				// TODO Auto-generated method stub
-				if (newValue) {
-
-				}
-			}
-
-		});*/
 	}
 
 	public static void main(String[] args) {
