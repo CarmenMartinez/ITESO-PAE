@@ -1,7 +1,6 @@
 package gui.controllers;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -11,7 +10,6 @@ import interfaces.TasksHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,8 +21,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import jfxtras.labs.scene.control.window.CloseIcon;
@@ -45,29 +46,42 @@ public class HomeController implements Initializable {
 	private TaskManager taskManager;
 
 	private ObservableList<Folder> folders;
-	private ObservableList<Task> tasks;
 
 	private Folder currentFolder;
 
     public HomeController() {
     	folders = FXCollections.observableArrayList();
-    	tasks = FXCollections.observableArrayList();
 
     	folderHandler = new FolderHandler() {
 
 			public void addFolder(Folder folder) {
 				folders.add(folder);
+				onFolderSelected(folder);
 			}
 
 			@Override
 			public void onFolderSelected(Folder folder) {
 				currentFolder = folder;
 				anchorPaneTasks.getChildren().clear();
-				List<Task> tasks = folder.getTasks();
+				ObservableList<Task> tasks = folder.getTasks();
 				if (tasks == null) return;
 				tasks.forEach(task -> {
 					anchorPaneTasks.getChildren().add(createTaskUI(task));
 				});
+			}
+
+			@Override
+			public void onFolderDeleted(Folder folder) {
+				int folderIndex = folders.indexOf(folder);
+				int foldersSize = folders.size();
+				folders.remove(folder);
+				if (foldersSize == 1) {
+					anchorPaneTasks.getChildren().clear();
+					return;
+				}
+				if (folder == currentFolder) {
+					onFolderSelected(folders.get(foldersSize - 1 == folderIndex ? folderIndex - 1 : folderIndex));
+				}
 			}
 
 		};
@@ -75,12 +89,15 @@ public class HomeController implements Initializable {
 		tasksHandler = new TasksHandler() {
 
 			public void addTask(Task task) {
-				tasks.add(task);
+				currentFolder.getTasks().add(task);
+				anchorPaneTasks.getChildren().add(createTaskUI(task));
 			}
 
 			@Override
 			public void updateTask(Task task) {
+				List<Task> tasks = currentFolder.getTasks();
 				tasks.set(tasks.indexOf(task), task);
+				updateTaskUI(task);
 			}
 
 		};
@@ -89,7 +106,6 @@ public class HomeController implements Initializable {
 
 	public void initialize(URL location, ResourceBundle resources) {
 		initFolders();
-		initTasks();
 		folderHandler.onFolderSelected(folders.get(0));
 	}
 
@@ -106,32 +122,12 @@ public class HomeController implements Initializable {
 		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css", "resources.i18n.task");
 	}
 
-	private void initTasks() {
-		tasks.addListener(new ListChangeListener<Task>() {
-
-			public void onChanged(Change<? extends Task> change) {
-				while (change.next()) {
-					if (change.wasReplaced()) {
-						Task task = change.getAddedSubList().get(0);
-						updateTaskUI(task);
-					} else if (change.wasAdded()) {
-						Task task = change.getAddedSubList().get(0);
-						currentFolder.getTasks().add(task);
-						anchorPaneTasks.getChildren().add(createTaskUI(task));
-					} else if (change.wasRemoved()) {
-						System.out.println("REMO");
-					}
-				}
-			}
-
-		});
-	}
-
 	private void initFolders() {
-		List<Task> tasks1 = new ArrayList<Task>();
+		ObservableList<Task> tasks1 = FXCollections.observableArrayList();
 		tasks1.add(new Task("Tarea1", "Hacerla hoy"));
 		tasks1.add(new Task("Tarea 2", "Ayer"));
-		List<Task> tasks2 = new ArrayList<Task>();
+		tasks1.add(new Task("Tarea 22", "Are"));
+		ObservableList<Task> tasks2 = FXCollections.observableArrayList();
 		tasks2.add(new Task("Presagio", "Hoy"));
 		folders.addAll(
 				new Folder("Tareas", tasks1),
@@ -157,27 +153,45 @@ public class HomeController implements Initializable {
 		CloseIcon closeIcon = new CloseIcon(window);
 		closeIcon.addEventHandler(
 			MouseEvent.MOUSE_PRESSED,
-			(MouseEvent mouseEvent) -> { System.out.println("Remove Task!"); }
+			(MouseEvent mouseEvent) -> { currentFolder.getTasks().remove(task); }
 		);
 		window.getRightIcons().add(closeIcon);
 
+		final ImageView editIcon = new ImageView(new Image("/img/edit.png"));
+		editIcon.setFitHeight(22);
+		editIcon.setFitWidth(22);
+
+		final ImageView infoIcon = new ImageView(new Image("/img/info.png"));
+		infoIcon.setFitHeight(22);
+		infoIcon.setFitWidth(22);
+
 		Label labelDescription = new Label(task.getDescription());
+<<<<<<< HEAD
 		ResourceBundle rb = ResourceBundle.getBundle("resources.i18n.task");
 		Button buttonEdit = new Button(rb.getString("task_edit"));
+=======
+		Button buttonEdit = new Button("",editIcon);
+		Button buttonInfo = new Button("",infoIcon);
+
+>>>>>>> master
 		buttonEdit.setOnAction((event) -> {
 			window.toFront();
 			taskManager.setTask(task);
 			openTaskWindow();
 		});
-		buttonEdit.getStyleClass().add("button-edit-task");
+
+		buttonEdit.getStyleClass().add("buttons-task");
+		buttonInfo.getStyleClass().add("buttons-task");
 		ScrollPane scrollPane = new ScrollPane(labelDescription);
 		scrollPane.getStyleClass().add("task-description");
-		VBox vBox = new VBox(scrollPane, buttonEdit);
+		HBox hbox = new HBox(buttonEdit,buttonInfo);
+		hbox.setAlignment(Pos.BOTTOM_RIGHT);
+		VBox vBox = new VBox(scrollPane, hbox);
 		vBox.setAlignment(Pos.TOP_CENTER);
 		vBox.setSpacing(10);
 		vBox.setStyle(task.getColor());
-
 		window.setContentPane(vBox);
+
 		window.setBoundsListenerEnabled(false);
 		window.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
             public void changed(ObservableValue<? extends Bounds> ov, Bounds t, Bounds t1) {
@@ -195,6 +209,8 @@ public class HomeController implements Initializable {
                     if (bounds.contains(x, y)) {
                     	window.setLayoutX(x);
                     	window.setLayoutY(y);
+                    	task.setXPosition(x);
+                    	task.setYPosition(y);
                     }
                 }
             }
