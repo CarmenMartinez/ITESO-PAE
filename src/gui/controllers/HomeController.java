@@ -166,14 +166,9 @@ public class HomeController implements Initializable {
 		infoIcon.setFitWidth(22);
 
 		Label labelDescription = new Label(task.getDescription());
-<<<<<<< HEAD
-		ResourceBundle rb = ResourceBundle.getBundle("resources.i18n.task");
-		Button buttonEdit = new Button(rb.getString("task_edit"));
-=======
 		Button buttonEdit = new Button("",editIcon);
 		Button buttonInfo = new Button("",infoIcon);
 
->>>>>>> master
 		buttonEdit.setOnAction((event) -> {
 			window.toFront();
 			taskManager.setTask(task);
