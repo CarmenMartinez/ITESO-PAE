@@ -1,11 +1,14 @@
 package db;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 public class DBHandler {
 
@@ -19,9 +22,15 @@ public class DBHandler {
 	 * @throws SQLException
 	 */
 	public static void initConnection() throws ClassNotFoundException, SQLException {
-		String db = "jdbc:derby:/Users/Alexis/MyDB;create=true";
-		Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-		connection = DriverManager.getConnection(db);
+		Properties prop = new Properties();
+		try(InputStream input = new FileInputStream("db.properties")) {
+			prop.load(input);
+			String db = prop.getProperty("db");
+			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+			connection = DriverManager.getConnection(db);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
