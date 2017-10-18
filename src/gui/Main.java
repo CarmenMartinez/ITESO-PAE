@@ -11,7 +11,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		//primaryStage.setMaximized(true);
-		Utils.createWindow(primaryStage, Main.this, "./fxml/Home.fxml", "TasksFX", null, "./css/home.css");
+		Utils.createWindow(primaryStage, Main.this, "./fxml/CreateAccount.fxml", "TasksFX", null, "./css/create-account.css");
 
 
 		/*primaryStage.showingProperty().addListener(new ChangeListener<Boolean>() {
