@@ -26,7 +26,7 @@ public class FolderController implements Initializable {
 		Object userData = textFieldFolderName.getScene().getWindow().getUserData();
 		if (isValidData() && userData != null && userData instanceof FolderHandler) {
 			try {
-				((FolderHandler) userData).addFolder(new Folder(textFieldFolderName.getText()));
+				((FolderHandler) userData).addFolder(new Folder((int) Math.floor(Math.random() * 100000), textFieldFolderName.getText()));
 				Utils.closeWindow(event);
 			} catch (Exception e) {
 				e.printStackTrace();
