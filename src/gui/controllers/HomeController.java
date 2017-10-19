@@ -1,7 +1,6 @@
 package gui.controllers;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -11,7 +10,6 @@ import interfaces.TasksHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,29 +49,8 @@ public class HomeController implements Initializable {
 
 	private Folder currentFolder;
 
-	private ListChangeListener<Task> tasksChangeListener;
-
     public HomeController() {
     	folders = FXCollections.observableArrayList();
-
-    	tasksChangeListener = new ListChangeListener<Task>() {
-
-			public void onChanged(Change<? extends Task> change) {
-				while (change.next()) {
-					if (change.wasReplaced()) {
-						Task task = change.getAddedSubList().get(0);
-						updateTaskUI(task);
-					} else if (change.wasAdded()) {
-						Task task = change.getAddedSubList().get(0);
-						currentFolder.getTasks().add(task);
-						anchorPaneTasks.getChildren().add(createTaskUI(task));
-					} else if (change.wasRemoved()) {
-						System.out.println("REMO");
-					}
-				}
-			}
-
-		};
 
     	folderHandler = new FolderHandler() {
 
@@ -85,7 +62,6 @@ public class HomeController implements Initializable {
 			@Override
 			public void onFolderSelected(Folder folder) {
 				currentFolder = folder;
-				initTasks(currentFolder);
 				anchorPaneTasks.getChildren().clear();
 				ObservableList<Task> tasks = folder.getTasks();
 				if (tasks == null) return;
@@ -114,12 +90,14 @@ public class HomeController implements Initializable {
 
 			public void addTask(Task task) {
 				currentFolder.getTasks().add(task);
+				anchorPaneTasks.getChildren().add(createTaskUI(task));
 			}
 
 			@Override
 			public void updateTask(Task task) {
 				List<Task> tasks = currentFolder.getTasks();
 				tasks.set(tasks.indexOf(task), task);
+				updateTaskUI(task);
 			}
 
 		};
@@ -132,7 +110,7 @@ public class HomeController implements Initializable {
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
-		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css");
+		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css", "resources.i18n.folder");
 	}
 
 	@FXML public void addTask(ActionEvent event) {
@@ -141,19 +119,14 @@ public class HomeController implements Initializable {
 	}
 
 	private void openTaskWindow() {
-		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css");
-	}
-
-	private void initTasks(Folder folder) {
-		if (folder == null || folder.getTasks() == null) { return; }
-		folder.getTasks().removeListener(tasksChangeListener);
-		folder.getTasks().addListener(tasksChangeListener);
+		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css", "resources.i18n.task");
 	}
 
 	private void initFolders() {
 		ObservableList<Task> tasks1 = FXCollections.observableArrayList();
 		tasks1.add(new Task("Tarea1", "Hacerla hoy"));
 		tasks1.add(new Task("Tarea 2", "Ayer"));
+		tasks1.add(new Task("Tarea 22", "Are"));
 		ObservableList<Task> tasks2 = FXCollections.observableArrayList();
 		tasks2.add(new Task("Presagio", "Hoy"));
 		folders.addAll(
@@ -180,19 +153,15 @@ public class HomeController implements Initializable {
 		CloseIcon closeIcon = new CloseIcon(window);
 		closeIcon.addEventHandler(
 			MouseEvent.MOUSE_PRESSED,
-			(MouseEvent mouseEvent) -> { System.out.println("Remove Task!"); }
+			(MouseEvent mouseEvent) -> { currentFolder.getTasks().remove(task); }
 		);
 		window.getRightIcons().add(closeIcon);
 
-		final ImageView editIcon = new ImageView(
-	      	      new Image("/img/edit.png")
-	      	    );
+		final ImageView editIcon = new ImageView(new Image("/img/edit.png"));
 		editIcon.setFitHeight(22);
 		editIcon.setFitWidth(22);
 
-		final ImageView infoIcon = new ImageView(
-	      	      new Image("/img/info.png")
-	      	    );
+		final ImageView infoIcon = new ImageView(new Image("/img/info.png"));
 		infoIcon.setFitHeight(22);
 		infoIcon.setFitWidth(22);
 
