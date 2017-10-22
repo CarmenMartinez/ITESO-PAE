@@ -8,13 +8,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import jfxtras.scene.control.LocalDateTimeTextField;
 import model.Task;
 import model.TaskManager;
 import utils.Utils;
 
 public class TaskController implements WindowState {
 
-	@FXML private TextField textTextFieldTitle, reminderTextFieldTitle, reminderTextFieldDate;
+	@FXML private TextField textTextFieldTitle, reminderTextFieldTitle;
+	
+	@FXML private LocalDateTimeTextField reminderTextFieldDate;
 
 	@FXML private TextArea textTextAreaBody, reminderTextAreaBody;
 
@@ -42,7 +45,7 @@ public class TaskController implements WindowState {
 				case 1:
 					reminderTextFieldTitle.setText(task.getTitle());
 					reminderTextAreaBody.setText(task.getDescription());
-					reminderTextFieldDate.setText(task.getReminderDate().toString());
+					reminderTextFieldDate.setLocalDateTime(task.getReminderDate());
 					break;
 				default:
 					break;
@@ -70,13 +73,13 @@ public class TaskController implements WindowState {
 				}
 				boolean isReminder = selectedTab == 1;
 				if (taskManager.getTask() == null) {
-					taskManager.getTaskHandler().addTask(new Task(title, description, isReminder ? LocalDateTime.now() : null));
+					taskManager.getTaskHandler().addTask(new Task(title, description, isReminder ? reminderTextFieldDate.getLocalDateTime() : null));
 				} else {
 					Task task = taskManager.getTask();
 					task.setTitle(title);
 					task.setDescription(description);
 					if (isReminder) {
-						task.setReminderDate(LocalDateTime.now());
+						task.setReminderDate(reminderTextFieldDate.getLocalDateTime());
 					}
 					taskManager.getTaskHandler().updateTask(task);
 				}
