@@ -45,7 +45,6 @@ public class TaskController implements WindowState {
 				case 1:
 					reminderTextFieldTitle.setText(task.getTitle());
 					reminderTextAreaBody.setText(task.getDescription());
-					//reminderTextFieldDate.setText(task.getReminderDate().toString());
 					reminderTextFieldDate.setLocalDateTime(task.getReminderDate());
 					break;
 				default:
