@@ -11,6 +11,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import jfxtras.scene.control.LocalDateTimeTextField?>
+
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.TaskController">
   <columnConstraints>
@@ -100,11 +102,12 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="reminderTextFieldDate" alignment="TOP_LEFT" promptText="DD/MM/YYY  HH:ii:ss" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                        <LocalDateTimeTextField fx:id="reminderTextFieldDate" GridPane.columnSpan="3" GridPane.rowIndex="1" >
                            <GridPane.margin>
-                              <Insets left="40.0" right="40.0" />
+                              <Insets left="40.0" right="40.0" top="30.0"/>
                            </GridPane.margin>
-                        </TextField>
+                        </LocalDateTimeTextField>
+                        
                         <Label text="%task_reminder_note" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <font>
                               <Font size="18.0" />
