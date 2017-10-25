@@ -23,5 +23,9 @@ public class LoginController implements Initializable {
 		Utils.closeWindow(event);
 	}
 
+	@FXML public void createAccount(ActionEvent event) {
+		Utils.createWindow(null, LoginController.this, "../fxml/CreateAccount.fxml", "TasksFX", null, "../css/create-account.css", "resources.i18n.createaccount");
+		Utils.closeWindow(event);
+	}
 
 }

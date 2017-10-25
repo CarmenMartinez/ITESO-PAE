@@ -11,7 +11,7 @@ import utils.Utils;
 
 public class CreateAccountController implements Initializable {
 
-	@FXML private TextField textFieldName, textFieldPassword;
+	@FXML private TextField textFieldFirstName, textFieldLastName, textFieldEmail, textFieldPassword;
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub

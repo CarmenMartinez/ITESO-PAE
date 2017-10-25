@@ -5,6 +5,10 @@
 	-fx-font-family: Helvetica;
 }
 
+#create-account{
+	-fx-font-size: 12px;
+}
+
 #input-text  {
 	-fx-padding: 10px 10px 10px 5px;
 	-fx-background: #fafafa;
