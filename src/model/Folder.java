@@ -12,8 +12,9 @@ public class Folder {
 	private StringProperty name;
 	private IntegerProperty id;
 	private ObservableList<Task> tasks;
+	private boolean isFavorite;
 
-	public Folder(String name) {
+	private Folder(String name) {
 		this.name = new SimpleStringProperty(name);
 	}
 
@@ -31,6 +32,16 @@ public class Folder {
 	public Folder(String name, ObservableList<Task> tasks) {
 		this(name);
 		this.tasks = tasks;
+	}
+
+	public Folder(int id, String name, ObservableList<Task> tasks, boolean isFavorite) {
+		this(id, name, tasks);
+		this.isFavorite = isFavorite;
+	}
+
+	public Folder(String name, ObservableList<Task> tasks, boolean isFavorite) {
+		this(name, tasks);
+		this.isFavorite = isFavorite;
 	}
 
 	public String getName() {
@@ -51,6 +62,14 @@ public class Folder {
 
 	public void setTasks(ObservableList<Task> tasks) {
 		this.tasks = tasks;
+	}
+
+	public boolean isFavorite() {
+		return isFavorite;
+	}
+
+	public void setFavorite(boolean isFavorite) {
+		this.isFavorite = isFavorite;
 	}
 
 }

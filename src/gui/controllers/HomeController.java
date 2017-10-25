@@ -1,6 +1,7 @@
 package gui.controllers;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -130,10 +131,22 @@ public class HomeController implements Initializable {
 		ObservableList<Task> tasks2 = FXCollections.observableArrayList();
 		tasks2.add(new Task("Presagio", "Hoy"));
 		folders.addAll(
-				new Folder("Tareas", tasks1),
+				new Folder("Tareas", tasks1, true),
 				new Folder("Peliculas por ver", tasks2),
-				new Folder("Mis imagenes")
+				new Folder((int) Math.floor(Math.random() * 100000), "Mis imagenes")
 		);
+		folders.sort(new Comparator<Folder>() {
+			@Override
+			public int compare(Folder o1, Folder o2) {
+				if (o1.isFavorite() && !o2.isFavorite()) {
+					return -1;
+				}
+				if (!o1.isFavorite() && o2.isFavorite()) {
+					return 1;
+				}
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
 		listViewFolders.setItems(folders);
 		listViewFolders.setSelectionModel(null);
 		listViewFolders.setCellFactory(new Callback<ListView<Folder>,

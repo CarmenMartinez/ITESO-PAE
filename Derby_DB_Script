@@ -1,0 +1,49 @@
+CREATE TABLE Person (
+  id INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+  name VARCHAR(50) NOT NULL,
+  lastName VARCHAR(50) NOT NULL,
+  userName VARCHAR(50) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  password VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Folder (
+  id INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+  userId INT NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  isFavorite SMALLINT NOT NULL,
+  status VARCHAR(50) NOT NULL,
+  creationDate TIMESTAMP
+);
+
+CREATE TABLE Task (
+  id INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+  folderId INT NOT NULL,
+  title VARCHAR(50) NOT NULL,
+  description VARCHAR(500) NOT NULL,
+  color VARCHAR(50) NOT NULL,
+  width DECIMAL(5, 2) NOT NULL,
+  height DECIMAL(5, 2) NOT NULL,
+  xPosition DECIMAL(14, 3) NOT NULL,
+  yPosition DECIMAL(14, 3) NOT NULL,
+  status VARCHAR(50) NOT NULL,
+  creationDate TIMESTAMP,
+  reminderDate TIMESTAMP
+);
+
+ALTER TABLE Folder ADD FOREIGN KEY (userId) REFERENCES Person (id);
+ALTER TABLE Task ADD FOREIGN KEY (folderId) REFERENCES Folder (id);
+
+INSERT INTO Person(name, lastName, userName, email, password) VALUES
+  ('Carlos Alexis', 'Gonzalez Gomez', 'Alexis', '123@test.com', '123'),
+  ('Dev', 'Test', 'test', 'test@test.com', 'test');
+
+INSERT INTO Folder(userId, name, isFavorite, status, creationDate) VALUES
+  (2, 'Tareas', 1, 'Activa', '2017-10-09 23:03:20'),
+  (2, 'Peliculas por Ver', 0, 'Activa', '2017-10-10 20:03:20');
+
+INSERT INTO Task(folderId, title, description, color, width, height, xPosition, yPosition, status, creationDate, reminderDate) VALUES
+  (1, 'PAE', 'Hacer BD', '#F4F4F4', 200.0, 120.0, 10.0, 50.0, 'Activa', '2017-10-10 20:03:20', null),
+  (1, 'Operativos', 'Practica 5', '#F4F4F4', 200.0, 120.0, 50.0, 30.0, 'Activa', '2017-10-10 21:03:20', null),
+  (2, 'The Foreigner', 'Nueva', '#F4F4F4', 200.0, 120.0, 50.0, 30.0, 'Activa', '2017-10-16 21:03:20', null),
+  (2, 'Taken', 'Best Movie Ever', '#F4F4F4', 200.0, 120.0, 30.0, 60.0, 'Activa', '2017-10-16 21:03:20', null);
