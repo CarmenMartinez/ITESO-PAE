@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -49,6 +50,8 @@ public class HomeController implements Initializable {
 	private ObservableList<Folder> folders;
 
 	private Folder currentFolder;
+
+	private Tooltip tp;
 
     public HomeController() {
     	folders = FXCollections.observableArrayList();
@@ -187,9 +190,15 @@ public class HomeController implements Initializable {
 			taskManager.setTask(task);
 			openTaskWindow();
 		});
-
+		tp = new Tooltip();
+		if (task.isReminder()) {
+			tp.setText(task.getStatus() + "\n" + "Fecha: " + task.getReminderDate().toString());
+		} else {
+			tp.setText(task.getStatus());
+		}
 		buttonEdit.getStyleClass().add("buttons-task");
 		buttonInfo.getStyleClass().add("buttons-task");
+		buttonInfo.setTooltip(tp);
 		ScrollPane scrollPane = new ScrollPane(labelDescription);
 		scrollPane.getStyleClass().add("task-description");
 		HBox hbox = new HBox(buttonEdit,buttonInfo);
