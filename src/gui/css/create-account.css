@@ -5,21 +5,17 @@
 	-fx-font-family: Helvetica;
 }
 
-#create-account{
-	-fx-font-size: 12px;
-}
-
 #input-text  {
 	-fx-padding: 10px 10px 10px 5px;
 	-fx-background: #fafafa;
 	-fx-border-radius: 0;
 }
 
-#button-log {
+#accept {
 	-fx-color: #357bd8;
   	-fx-font-size: 16px;
 }
 
-#button-log:hover {
+#accept:hover {
 	-fx-background-color: #457fd8;
 }

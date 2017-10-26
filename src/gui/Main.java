@@ -13,7 +13,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		//primaryStage.setMaximized(true);
-		Utils.createWindow(primaryStage, Main.this, "./fxml/Home.fxml", "TasksFX", null, "./css/home.css", "resources.i18n.home");
+
+		Utils.createWindow(primaryStage, Main.this, "./fxml/Login.fxml", "TasksFX", null, "./css/login.css", "resources.i18n.login");
 
 	}
 
