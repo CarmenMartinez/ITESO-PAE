@@ -13,6 +13,7 @@ public class Task {
 	private StringProperty description;
 	private LocalDateTime reminderDate;
 	private String color;
+	private String status;
 
 	private NumberAttributes delta, size;
 
@@ -24,6 +25,7 @@ public class Task {
 		this.size = new NumberAttributes(width,  height);
 		this.color = color;
 		this.reminderDate = reminderDate;
+		this.status = "Pendiente";
 	}
 
 	public Task(String title, String description, double xPosition, double yPosition, double width, double height, String color, LocalDateTime reminderDate) {
@@ -105,6 +107,14 @@ public class Task {
 
 	public LocalDateTime getReminderDate() {
 		return reminderDate;
+	}
+
+	public void setStatus(String status){
+		this.status = status;
+	}
+
+	public String getStatus(){
+		return this.status;
 	}
 
 	public boolean isReminder() {
