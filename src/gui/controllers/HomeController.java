@@ -191,11 +191,10 @@ public class HomeController implements Initializable {
 			openTaskWindow();
 		});
 		tp = new Tooltip();
-		if(task.isReminder()){
+		if (task.isReminder()) {
 			tp.setText(task.getStatus() + "\n" + "Fecha: " + task.getReminderDate().toString());
-		}
-		else{
-		tp.setText(task.getStatus());
+		} else {
+			tp.setText(task.getStatus());
 		}
 		buttonEdit.getStyleClass().add("buttons-task");
 		buttonInfo.getStyleClass().add("buttons-task");
