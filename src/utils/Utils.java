@@ -1,6 +1,7 @@
 package utils;
 
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -10,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -68,6 +71,24 @@ public class Utils {
 
 	public static void closeWindow(ActionEvent event) {
 		((Node) (event.getSource())).getScene().getWindow().hide();
+	}
+
+	public static boolean isValidInput(String input) {
+		return input != null && !input.isEmpty();
+	}
+
+	public static void showError(String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setHeaderText(message);
+		alert.show();
+	}
+
+	public static DateTimeFormatter getDBDateTimeFormatter() {
+		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	}
+
+	public static String removeNanos(String dateTime) {
+		return dateTime.substring(0, dateTime.indexOf("."));
 	}
 
 }

@@ -1,0 +1,1 @@
+db=jdbc:derby:DB_LOCATION_HERE;create=true
