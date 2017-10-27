@@ -104,14 +104,6 @@ public class Task {
 		return reminderDate;
 	}
 
-	public void setStatus(String status){
-		this.status = status;
-	}
-
-	public String getStatus(){
-		return this.status;
-	}
-
 	public boolean isReminder() {
 		return reminderDate != null;
 	}

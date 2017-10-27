@@ -90,6 +90,7 @@ public class HomeController implements WindowState {
 			@Override
 			public void onFolderSelected(Folder folder) {
 				currentFolder = folder;
+				taskManager.setFolderId(folder.getId());
 				try {
 					if (!folder.hasTasksLoaded()) {
 						folder.setTasks(DBHandler.getFolderTasks(folder.getId()));
