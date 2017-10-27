@@ -1,15 +1,17 @@
 package gui.controllers;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-import interfaces.FolderHandler;
+import db.DBHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import model.Folder;
+import model.FolderManager;
 import utils.Utils;
 
 public class FolderController implements Initializable {
@@ -24,9 +26,11 @@ public class FolderController implements Initializable {
 
 	@FXML public void accept(ActionEvent event) {
 		Object userData = textFieldFolderName.getScene().getWindow().getUserData();
-		if (isValidData() && userData != null && userData instanceof FolderHandler) {
+		if (isValidData() && userData != null && userData instanceof FolderManager) {
 			try {
-				((FolderHandler) userData).addFolder(new Folder((int) Math.floor(Math.random() * 100000), textFieldFolderName.getText()));
+				FolderManager folderManager = (FolderManager) userData;
+				Folder folder = DBHandler.insertFolder(folderManager.getUser().getId(), textFieldFolderName.getText(), checkBoxFavorite.isSelected(), "Activa", LocalDateTime.now());
+				folderManager.getFolderHandler().addFolder(folder);
 				Utils.closeWindow(event);
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -35,5 +35,10 @@
 	    <artifactId>jfxtras-labs</artifactId>
 	    <version>8.0-r5</version>
 	</dependency>
+	<dependency>
+  		<groupId>org.apache.derby</groupId>
+  		<artifactId>derby</artifactId>
+  		<version>10.13.1.1</version>
+  	</dependency>
   </dependencies>
 </project>
