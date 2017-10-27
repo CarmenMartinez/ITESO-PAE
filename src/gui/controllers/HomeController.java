@@ -1,13 +1,16 @@
 package gui.controllers;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import db.DBHandler;
 import gui.views.FolderCell;
 import interfaces.FolderHandler;
 import interfaces.TasksHandler;
+import interfaces.WindowState;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -32,37 +36,68 @@ import javafx.util.Callback;
 import jfxtras.labs.scene.control.window.CloseIcon;
 import jfxtras.labs.scene.control.window.Window;
 import model.Folder;
+import model.FolderManager;
 import model.Task;
 import model.TaskManager;
+import model.User;
 import utils.Utils;
 
-public class HomeController implements Initializable {
+public class HomeController implements WindowState {
 
 	@FXML private ListView<Folder> listViewFolders;
 
 	@FXML private AnchorPane anchorPaneTasks;
 
+	private FolderManager folderManager;
 	private FolderHandler folderHandler;
 	private TasksHandler tasksHandler;
 	private TaskManager taskManager;
 
+	private User user;
 	private ObservableList<Folder> folders;
 
 	private Folder currentFolder;
 
-    public HomeController() {
-    	folders = FXCollections.observableArrayList();
+	private Tooltip tp;
 
+    public HomeController() {
     	folderHandler = new FolderHandler() {
 
 			public void addFolder(Folder folder) {
-				folders.add(folder);
+				boolean isFavorite = folder.isFavorite();
+				Folder actualFolder;
+				int i;
+				for (i = 0; i < folders.size(); i++) {
+					actualFolder = folders.get(i);
+					if (isFavorite) {
+						if (!actualFolder.isFavorite() ||
+								folder.getName().compareTo(actualFolder.getName()) < 0)
+							break;
+					} else {
+						if (!actualFolder.isFavorite()) continue;
+						if (folder.getName().compareTo(actualFolder.getName()) < 0) break;
+					}
+				}
+				if (i < folders.size()) {
+					folders.add(i, folder);
+				} else {
+					folders.add(folder);
+				}
+				folder.setTasksLoaded(true);
 				onFolderSelected(folder);
 			}
 
 			@Override
 			public void onFolderSelected(Folder folder) {
 				currentFolder = folder;
+				taskManager.setFolderId(folder.getId());
+				try {
+					if (!folder.hasTasksLoaded()) {
+						folder.setTasks(DBHandler.getFolderTasks(folder.getId()));
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				anchorPaneTasks.getChildren().clear();
 				ObservableList<Task> tasks = folder.getTasks();
 				if (tasks == null) return;
@@ -105,13 +140,17 @@ public class HomeController implements Initializable {
 		taskManager = new TaskManager().setTaskHandler(tasksHandler);
 	}
 
-	public void initialize(URL location, ResourceBundle resources) {
-		initFolders();
+    @Override
+	public void onReady() {
+    	user = (User) anchorPaneTasks.getScene().getWindow().getUserData();
+    	folderManager =  new FolderManager().setFolderHandler(folderHandler).setUser(user);
+    	folders = user.getFolders();
+    	initFolders();
 		folderHandler.onFolderSelected(folders.get(0));
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
-		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderHandler, "../css/folder.css", "resources.i18n.folder");
+		Utils.createWindow(null, HomeController.this, "../fxml/Folder.fxml", "Add New Folder", folderManager, "../css/folder.css", "resources.i18n.folder");
 	}
 
 	@FXML public void addTask(ActionEvent event) {
@@ -124,29 +163,6 @@ public class HomeController implements Initializable {
 	}
 
 	private void initFolders() {
-		ObservableList<Task> tasks1 = FXCollections.observableArrayList();
-		tasks1.add(new Task("Tarea1", "Hacerla hoy"));
-		tasks1.add(new Task("Tarea 2", "Ayer"));
-		tasks1.add(new Task("Tarea 22", "Are"));
-		ObservableList<Task> tasks2 = FXCollections.observableArrayList();
-		tasks2.add(new Task("Presagio", "Hoy"));
-		folders.addAll(
-				new Folder("Tareas", tasks1, true),
-				new Folder("Peliculas por ver", tasks2),
-				new Folder((int) Math.floor(Math.random() * 100000), "Mis imagenes")
-		);
-		folders.sort(new Comparator<Folder>() {
-			@Override
-			public int compare(Folder o1, Folder o2) {
-				if (o1.isFavorite() && !o2.isFavorite()) {
-					return -1;
-				}
-				if (!o1.isFavorite() && o2.isFavorite()) {
-					return 1;
-				}
-				return o1.getName().compareTo(o2.getName());
-			}
-		});
 		listViewFolders.setItems(folders);
 		listViewFolders.setSelectionModel(null);
 		listViewFolders.setCellFactory(new Callback<ListView<Folder>,
@@ -187,9 +203,15 @@ public class HomeController implements Initializable {
 			taskManager.setTask(task);
 			openTaskWindow();
 		});
-
+		tp = new Tooltip();
+		if (task.isReminder()) {
+			tp.setText(task.getStatus() + "\n" + "Fecha: " + task.getReminderDate().toString());
+		} else {
+			tp.setText(task.getStatus());
+		}
 		buttonEdit.getStyleClass().add("buttons-task");
 		buttonInfo.getStyleClass().add("buttons-task");
+		buttonInfo.setTooltip(tp);
 		ScrollPane scrollPane = new ScrollPane(labelDescription);
 		scrollPane.getStyleClass().add("task-description");
 		HBox hbox = new HBox(buttonEdit,buttonInfo);

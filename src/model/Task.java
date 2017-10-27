@@ -1,42 +1,39 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Task {
 
+	public static final String DEFAULT_COLOR = "#f4f4f4";
+	public static final double DEFAULT_POSITION = 10.0;
+	public static final double DEFAULT_WIDTH = 200.0;
+	public static final double DEFAULT_HEIGHT = 120.0;
+
 	private int id;
 
 	private StringProperty title;
 	private StringProperty description;
-	private LocalDateTime reminderDate;
-	private String color;
+	private LocalDateTime creationDate, reminderDate;
+	private String color, status;
 
 	private NumberAttributes delta, size;
 
-	public Task(int id, String title, String description, double xPosition, double yPosition, double width, double height, String color, LocalDateTime reminderDate) {
+	public Task(int id, String title, String description, double xPosition, double yPosition, double width, double height, String color, String status, LocalDateTime creationDate, LocalDateTime reminderDate) {
 		this.id = id;
 		this.title = new SimpleStringProperty(title);
 		this.description = new SimpleStringProperty(description);
 		this.delta = new NumberAttributes(xPosition, yPosition);
 		this.size = new NumberAttributes(width,  height);
 		this.color = color;
+		this.status = status;
+		this.creationDate = creationDate;
 		this.reminderDate = reminderDate;
-	}
-
-	public Task(String title, String description, double xPosition, double yPosition, double width, double height, String color, LocalDateTime reminderDate) {
-		// TODO this random should not be here, remove when database is ready
-		this((int) Math.floor(Math.random() * 100000), title, description, xPosition, yPosition, width, height, color, reminderDate);
-	}
-
-	public Task(String title, String description) {
-		this(title, description, 10, 10, 200, 120, "#f4f4f4", null);
-	}
-
-	public Task(String title, String description, LocalDateTime reminderDate) {
-		this(title, description, 10, 10, 200, 120, "#f4f4f4", reminderDate);
+		ResourceBundle bundle = ResourceBundle.getBundle("resources.i18n.Task");
+		this.status = bundle.getString("task_pending");
 	}
 
 	public int getId() {
@@ -111,6 +108,22 @@ public class Task {
 		return reminderDate != null;
 	}
 
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Task)) return false;
@@ -130,7 +143,5 @@ public class Task {
 	public String toString() {
 		return "Task [id=" + id + ", title=" + title + ", description=" + description + "]";
 	}
-
-
 
 }

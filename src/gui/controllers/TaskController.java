@@ -2,6 +2,7 @@ package gui.controllers;
 
 import java.time.LocalDateTime;
 
+import db.DBHandler;
 import interfaces.WindowState;
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -16,7 +17,7 @@ import utils.Utils;
 public class TaskController implements WindowState {
 
 	@FXML private TextField textTextFieldTitle, reminderTextFieldTitle;
-	
+
 	@FXML private LocalDateTimeTextField reminderTextFieldDate;
 
 	@FXML private TextArea textTextAreaBody, reminderTextAreaBody;
@@ -73,7 +74,8 @@ public class TaskController implements WindowState {
 				}
 				boolean isReminder = selectedTab == 1;
 				if (taskManager.getTask() == null) {
-					taskManager.getTaskHandler().addTask(new Task(title, description, isReminder ? reminderTextFieldDate.getLocalDateTime() : null));
+					Task task = DBHandler.insertTask(taskManager.getFolderId(), title, description, Task.DEFAULT_COLOR, Task.DEFAULT_WIDTH, Task.DEFAULT_HEIGHT, Task.DEFAULT_POSITION, Task.DEFAULT_POSITION, "Activa", LocalDateTime.now(), isReminder ? reminderTextFieldDate.getLocalDateTime() : null);
+					taskManager.getTaskHandler().addTask(task);
 				} else {
 					Task task = taskManager.getTask();
 					task.setTitle(title);
