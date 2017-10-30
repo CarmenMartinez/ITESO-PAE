@@ -3,14 +3,17 @@ package gui.controllers;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 import db.DBHandler;
+import interfaces.RunnableTask;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import model.Folder;
 import model.User;
+import utils.ThreadHandler;
+import utils.ThreadHandler.ThreadHandlerException;
 import utils.Utils;
 
 public class LoginController implements Initializable {
@@ -34,25 +37,24 @@ public class LoginController implements Initializable {
 			Utils.showError("Por favor ingresa el nombre de usuario y contrasenia.");
 			return;
 		}
-		User user = null;
 		try {
-			user = DBHandler.login(userName, userPassword);
-			if (user == null) {
-				Utils.showError("Nombre de usuario o contrasenia incorrectos. Por favor revisa tus datos.");
-				return;
-			}
-		} catch (SQLException e) {
+			ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {
+
+				@Override
+				public void onFinish(Object response) {
+					if (response == null) {
+						Utils.showError("Nombre de usuario o contrasenia incorrectos. Por favor revisa tus datos.");
+						return;
+					}
+					User user = (User) response;
+					Utils.createWindow(null, LoginController.this, "../fxml/Home.fxml", "TasksFX", user, "../css/home.css", "resources.i18n.home");
+					Utils.closeWindow(event);
+				}
+
+			}).performLogin(userName, userPassword);
+		} catch (InterruptedException | ExecutionException | ThreadHandlerException e) {
 			e.printStackTrace();
 		}
-		try {
-			user.setFolders(DBHandler.getUserFolders(user.getId()));
-			Folder folder = user.getFolders().get(0);
-			folder.setTasks(DBHandler.getFolderTasks(folder.getId()));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		Utils.createWindow(null, LoginController.this, "../fxml/Home.fxml", "TasksFX", user, "../css/home.css", "resources.i18n.home");
-		Utils.closeWindow(event);
 	}
 
 	@FXML public void createAccount(ActionEvent event) {

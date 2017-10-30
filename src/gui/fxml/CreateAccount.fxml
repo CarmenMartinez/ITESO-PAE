@@ -10,18 +10,20 @@
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0">
          <children>
-            <Pane layoutY="-1.0" prefHeight="355.0" prefWidth="230.0">
+            <Pane layoutY="-1.0" prefHeight="410.0" prefWidth="230.0">
                <children>
                   <TextField id="firstName" fx:id="textFieldFirstName" layoutX="26.0" layoutY="74.0" />
                   <Label id="app-name" alignment="CENTER" layoutX="67.0" layoutY="16.0" text="TasksFx" />
                   <TextField id="lastName" fx:id="textFieldLastName" layoutX="26.0" layoutY="134.0" />
-                  <Button id="accept" contentDisplay="CENTER" layoutX="26.0" layoutY="302.0" mnemonicParsing="false" onAction="#createAccount" prefHeight="26.0" prefWidth="170.0" text="%create_accept" />
+                  <Button id="accept" contentDisplay="CENTER" focusTraversable="false" layoutX="26.0" layoutY="362.0" mnemonicParsing="false" onAction="#createAccount" prefHeight="26.0" prefWidth="170.0" text="%create_accept" />
                   <Label contentDisplay="CENTER" layoutX="27.0" layoutY="51.0" text="%create_first_name" />
                   <Label contentDisplay="CENTER" layoutX="25.0" layoutY="112.0" text="%create_last_name" />
-                  <Label contentDisplay="CENTER" layoutX="25.0" layoutY="171.0" text="%create_email" />
-                  <TextField id="email" fx:id="textFieldEmail" layoutX="26.0" layoutY="193.0" />
-                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="233.0" text="%create_password" />
-                  <TextField id="password" fx:id="textFieldPassword" layoutX="26.0" layoutY="256.0" />
+                  <TextField id="userName" fx:id="textFieldUserName" layoutX="25.0" layoutY="193.0" />
+                  <Label alignment="CENTER" layoutX="25.0" layoutY="171.0" text="Nombre de usuario" />
+                  <Label contentDisplay="CENTER" layoutX="25.0" layoutY="233.0" text="%create_email" />
+                  <TextField id="email" fx:id="textFieldEmail" layoutX="26.0" layoutY="256.0" />
+                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="292.0" text="%create_password" />
+                  <TextField id="password" fx:id="textFieldPassword" layoutX="26.0" layoutY="316.0" />
                </children>
             </Pane>
          </children>
