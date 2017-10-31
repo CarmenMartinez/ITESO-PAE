@@ -112,16 +112,38 @@ public class DBHandler {
         String query = "SELECT * FROM Person WHERE (userName = '" + userName + "' OR email = '" + userName + "') AND password = '" + userPassword + "'";
         // Execute query
         ResultSet resultSet = executeQuery(query);
-        User user = null;
-        if (resultSet.next()) {
-            user = new User(
-                resultSet.getInt("id"),
-                resultSet.getString("name"),
-                resultSet.getString("lastName"),
-                resultSet.getString("userName"),
-                resultSet.getString("email")
-            );
-        }
+        return resultSet.next()
+        		? new User(
+		                resultSet.getInt("id"),
+		                resultSet.getString("name"),
+		                resultSet.getString("lastName"),
+		                resultSet.getString("userName"),
+		                resultSet.getString("email")
+		          )
+        		: null;
+    }
+
+    public static User createUser(String name, String lastName, String userName, String email, String password) throws SQLException {
+    	String queryUsers = "SELECT * FROM Person WHERE userName = '" + userName + "'";
+    	ResultSet resultSetUsers = executeQuery(queryUsers);
+    	boolean repeatedUser = resultSetUsers.next();
+    	resultSetUsers.close();
+    	if (repeatedUser) return null;
+    	// Create the sql statement.
+        String query = "INSERT INTO Person(name, lastName, userName, email, password) VALUES(?, ?, ?, ?, ?)";
+        PreparedStatement preparedStatement = getPreparedStatement(query);
+        // Bind all the data
+        preparedStatement.setString(1, name);
+        preparedStatement.setString(2, lastName);
+        preparedStatement.setString(3, userName);
+        preparedStatement.setString(4, email);
+        preparedStatement.setString(5, password);
+        // Execute and close.
+        preparedStatement.execute();
+        ResultSet resultSet = preparedStatement.getGeneratedKeys();
+        User user = resultSet.next() ? new User(resultSet.getInt(1), name, lastName, userName, email) : null;
+        resultSet.close();
+        preparedStatement.close();
         return user;
     }
 
@@ -218,6 +240,44 @@ public class DBHandler {
         ResultSet resultSet = preparedStatement.getGeneratedKeys();
         Task task = resultSet.next() ? new Task(resultSet.getInt(1), title, description, xPosition, yPosition, width, height, color, status, creationDate, reminderDate) : null;
         resultSet.close();
+        preparedStatement.close();
+        return task;
+    }
+
+    public static Folder deleteFolder(Folder folder) throws SQLException {
+    	String queryDeleteFolder = "DELETE FROM Folder WHERE id = " + folder.getId();
+    	String queryDeleteFolderTasks = "DELETE FROM Task WHERE folderId = " + folder.getId();
+    	executeUpdateQuery(queryDeleteFolderTasks);
+    	executeUpdateQuery(queryDeleteFolder);
+    	return folder;
+    }
+
+    public static Task deleteTask(Task task) throws SQLException {
+    	String query = "DELETE FROM Task WHERE id = " + task.getId();
+    	return executeUpdateQuery(query) > 0 ? task : null;
+    }
+
+    public static Task updateTaskInfo(Task task) throws SQLException {
+    	String query = "UPDATE Task SET title = ?, description = ?, reminderDate = ? WHERE id = " + task.getId();
+    	PreparedStatement preparedStatement = getPreparedStatement(query);
+    	preparedStatement.setString(1, task.getTitle());
+    	preparedStatement.setString(2, task.getDescription());
+    	preparedStatement.setTimestamp(3, task.getReminderDate() != null ? new Timestamp(task.getReminderDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()) : null);
+    	// Execute and close.
+        preparedStatement.execute();
+        preparedStatement.close();
+        return task;
+    }
+
+    public static Task updateTaskAttributes(Task task) throws SQLException {
+    	String query = "UPDATE Task SET width = ?, height = ?, xPosition = ?, yPosition = ? WHERE id = " + task.getId();;
+    	PreparedStatement preparedStatement = getPreparedStatement(query);
+    	preparedStatement.setDouble(1, task.getWidth());
+        preparedStatement.setDouble(2, task.getHeight());
+        preparedStatement.setDouble(3, task.getXPosition());
+        preparedStatement.setDouble(4, task.getYPosition());
+        // Execute and close.
+        preparedStatement.execute();
         preparedStatement.close();
         return task;
     }

@@ -1,23 +1,18 @@
 package gui.controllers;
 
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.List;
-import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
-import db.DBHandler;
 import gui.views.FolderCell;
 import interfaces.FolderHandler;
+import interfaces.RunnableTask;
 import interfaces.TasksHandler;
 import interfaces.WindowState;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -40,17 +35,17 @@ import model.FolderManager;
 import model.Task;
 import model.TaskManager;
 import model.User;
+import utils.ThreadHandler;
+import utils.ThreadHandler.ThreadHandlerException;
 import utils.Utils;
 
-public class HomeController implements WindowState {
+public class HomeController implements WindowState, FolderHandler, TasksHandler {
 
 	@FXML private ListView<Folder> listViewFolders;
 
 	@FXML private AnchorPane anchorPaneTasks;
 
 	private FolderManager folderManager;
-	private FolderHandler folderHandler;
-	private TasksHandler tasksHandler;
 	private TaskManager taskManager;
 
 	private User user;
@@ -61,92 +56,18 @@ public class HomeController implements WindowState {
 	private Tooltip tp;
 
     public HomeController() {
-    	folderHandler = new FolderHandler() {
-
-			public void addFolder(Folder folder) {
-				boolean isFavorite = folder.isFavorite();
-				Folder actualFolder;
-				int i;
-				for (i = 0; i < folders.size(); i++) {
-					actualFolder = folders.get(i);
-					if (isFavorite) {
-						if (!actualFolder.isFavorite() ||
-								folder.getName().compareTo(actualFolder.getName()) < 0)
-							break;
-					} else {
-						if (!actualFolder.isFavorite()) continue;
-						if (folder.getName().compareTo(actualFolder.getName()) < 0) break;
-					}
-				}
-				if (i < folders.size()) {
-					folders.add(i, folder);
-				} else {
-					folders.add(folder);
-				}
-				folder.setTasksLoaded(true);
-				onFolderSelected(folder);
-			}
-
-			@Override
-			public void onFolderSelected(Folder folder) {
-				currentFolder = folder;
-				taskManager.setFolderId(folder.getId());
-				try {
-					if (!folder.hasTasksLoaded()) {
-						folder.setTasks(DBHandler.getFolderTasks(folder.getId()));
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				anchorPaneTasks.getChildren().clear();
-				ObservableList<Task> tasks = folder.getTasks();
-				if (tasks == null) return;
-				tasks.forEach(task -> {
-					anchorPaneTasks.getChildren().add(createTaskUI(task));
-				});
-			}
-
-			@Override
-			public void onFolderDeleted(Folder folder) {
-				int folderIndex = folders.indexOf(folder);
-				int foldersSize = folders.size();
-				folders.remove(folder);
-				if (foldersSize == 1) {
-					anchorPaneTasks.getChildren().clear();
-					return;
-				}
-				if (folder == currentFolder) {
-					onFolderSelected(folders.get(foldersSize - 1 == folderIndex ? folderIndex - 1 : folderIndex));
-				}
-			}
-
-		};
-
-		tasksHandler = new TasksHandler() {
-
-			public void addTask(Task task) {
-				currentFolder.getTasks().add(task);
-				anchorPaneTasks.getChildren().add(createTaskUI(task));
-			}
-
-			@Override
-			public void updateTask(Task task) {
-				List<Task> tasks = currentFolder.getTasks();
-				tasks.set(tasks.indexOf(task), task);
-				updateTaskUI(task);
-			}
-
-		};
-		taskManager = new TaskManager().setTaskHandler(tasksHandler);
+		taskManager = new TaskManager().setTaskHandler(this);
 	}
 
     @Override
 	public void onReady() {
     	user = (User) anchorPaneTasks.getScene().getWindow().getUserData();
-    	folderManager =  new FolderManager().setFolderHandler(folderHandler).setUser(user);
+    	folderManager =  new FolderManager().setFolderHandler(this).setUser(user);
     	folders = user.getFolders();
     	initFolders();
-		folderHandler.onFolderSelected(folders.get(0));
+    	if (folders.size() > 0) {
+    		onFolderSelected(folders.get(0));
+    	}
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
@@ -158,17 +79,35 @@ public class HomeController implements WindowState {
 		openTaskWindow();
 	}
 
+	@FXML public void saveTasks(ActionEvent event) {
+		for (Task task : currentFolder.getTasks()) {
+			try {
+				ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {
+
+					@Override
+					public void onFinish(Object response) {
+						if (response == null) {
+							Utils.showError("Unable to save task attributes");
+						}
+					}
+
+				}).performUpdateTaskAttributes(task);
+			} catch (InterruptedException | ExecutionException | ThreadHandlerException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private void openTaskWindow() {
 		Utils.createWindow(null, HomeController.this, "../fxml/Task.fxml", "Add New Task", taskManager, "../css/task.css", "resources.i18n.task");
 	}
 
 	private void initFolders() {
 		listViewFolders.setItems(folders);
-		listViewFolders.setSelectionModel(null);
 		listViewFolders.setCellFactory(new Callback<ListView<Folder>,
 	            ListCell<Folder>>() {
 	                public ListCell<Folder> call(ListView<Folder> list) {
-	                    return new FolderCell(folderHandler);
+	                    return new FolderCell(HomeController.this);
 	                }
 	            }
 	        );
@@ -182,7 +121,24 @@ public class HomeController implements WindowState {
 		CloseIcon closeIcon = new CloseIcon(window);
 		closeIcon.addEventHandler(
 			MouseEvent.MOUSE_PRESSED,
-			(MouseEvent mouseEvent) -> { currentFolder.getTasks().remove(task); }
+			(MouseEvent mouseEvent) -> {
+				try {
+					ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {
+
+						@Override
+						public void onFinish(Object response) {
+							if (response == null) {
+								Utils.showError("Unable to delete task.");
+								return;
+							}
+							currentFolder.getTasks().remove(task);
+						}
+
+					}).performDeleteTask(task);
+				} catch (InterruptedException | ExecutionException | ThreadHandlerException e) {
+					e.printStackTrace();
+				}
+			}
 		);
 		window.getRightIcons().add(closeIcon);
 
@@ -221,7 +177,6 @@ public class HomeController implements WindowState {
 		vBox.setSpacing(10);
 		vBox.setStyle(task.getColor());
 		window.setContentPane(vBox);
-
 		window.setBoundsListenerEnabled(false);
 		window.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
             public void changed(ObservableValue<? extends Bounds> ov, Bounds t, Bounds t1) {
@@ -229,7 +184,8 @@ public class HomeController implements WindowState {
                     if (t1.equals(t)) {
                         return;
                     }
-
+                    task.setWidth(window.getWidth());
+                    task.setHeight(window.getHeight());
                     window.getParent().requestLayout();
 
                     double x = Math.max(0, window.getLayoutX());
@@ -253,6 +209,109 @@ public class HomeController implements WindowState {
 		window.setTitle(task.getTitle());
 		Label label = (Label) ((ScrollPane) window.getContentPane().getChildren().get(0)).getContent();
 		label.setText(task.getDescription());
+	}
+
+	private void refreshAnchorPane(Folder folder) {
+		anchorPaneTasks.getChildren().clear();
+		ObservableList<Task> tasks = folder.getTasks();
+		if (tasks == null) return;
+		tasks.forEach(task -> {
+			anchorPaneTasks.getChildren().add(createTaskUI(task));
+		});
+	}
+
+	@Override
+	public void addFolder(Folder folder) {
+		boolean isFavorite = folder.isFavorite();
+		Folder actualFolder;
+		int i;
+		for (i = 0; i < folders.size(); i++) {
+			actualFolder = folders.get(i);
+			if (isFavorite) {
+				if (!actualFolder.isFavorite() ||
+						folder.getName().compareTo(actualFolder.getName()) < 0)
+					break;
+			} else {
+				if (!actualFolder.isFavorite()) continue;
+				if (folder.getName().compareTo(actualFolder.getName()) < 0) break;
+			}
+		}
+		if (i < folders.size()) {
+			folders.add(i, folder);
+		} else {
+			folders.add(folder);
+		}
+		folder.setTasksLoaded(true);
+		onFolderSelected(folder);
+	}
+
+	@Override
+	public void onFolderSelected(Folder folder) {
+		currentFolder = folder;
+		taskManager.setFolderId(folder.getId());
+		if (!folder.hasTasksLoaded()) {
+			try {
+				ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {
+
+					@SuppressWarnings("unchecked")
+					@Override
+					public void onFinish(Object response) {
+						if (response == null) {
+							Utils.showError("Unable to retreive tasks.");
+							return;
+						}
+						folder.setTasks((ObservableList<Task>) response);
+						refreshAnchorPane(folder);
+					}
+
+				}).performGetFolderTasks(folder.getId());
+			} catch (InterruptedException | ExecutionException | ThreadHandlerException e) {
+				e.printStackTrace();
+			}
+		} else {
+			refreshAnchorPane(folder);
+		}
+	}
+
+	@Override
+	public void onFolderDeleted(Folder folder) {
+		try {
+			ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {
+
+				@Override
+				public void onFinish(Object response) {
+					if (response == null) {
+						Utils.showError("Unable to delete folder.");
+					}
+					int folderIndex = folders.indexOf(folder);
+					int foldersSize = folders.size();
+
+					folders.remove(folder);
+					if (foldersSize == 1) {
+						anchorPaneTasks.getChildren().clear();
+						return;
+					}
+					if (folder == currentFolder) {
+						onFolderSelected(folders.get(foldersSize - 1 == folderIndex ? folderIndex - 1 : folderIndex));
+					}
+				}
+			}).performDeleteFolder(folder);
+		} catch (InterruptedException | ExecutionException | ThreadHandlerException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	@Override
+	public void addTask(Task task) {
+		currentFolder.getTasks().add(task);
+		anchorPaneTasks.getChildren().add(createTaskUI(task));
+	}
+
+	@Override
+	public void updateTask(Task task) {
+		List<Task> tasks = currentFolder.getTasks();
+		tasks.set(tasks.indexOf(task), task);
+		updateTaskUI(task);
 	}
 
 }

@@ -2,7 +2,6 @@ package utils;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import interfaces.WindowState;

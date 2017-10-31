@@ -2,7 +2,7 @@ package gui.controllers;
 
 import java.time.LocalDateTime;
 
-import db.DBHandler;
+import interfaces.RunnableTask;
 import interfaces.WindowState;
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import model.Task;
 import model.TaskManager;
+import utils.ThreadHandler;
 import utils.Utils;
 
 public class TaskController implements WindowState {
@@ -55,40 +56,62 @@ public class TaskController implements WindowState {
 	}
 
 	@FXML public void accept(ActionEvent event) {
-
-		if (isValidData()) {
-			try {
-				int selectedTab = tabPane.getSelectionModel().getSelectedIndex();
-				String title = null, description = null;
-				switch (selectedTab) {
-					case 0:
-						title = textTextFieldTitle.getText();
-						description = textTextAreaBody.getText();
-						break;
-					case 1:
-						title = reminderTextFieldTitle.getText();
-						description = reminderTextAreaBody.getText();
-						break;
-					default:
-						break;
-				}
-				boolean isReminder = selectedTab == 1;
-				if (taskManager.getTask() == null) {
-					Task task = DBHandler.insertTask(taskManager.getFolderId(), title, description, Task.DEFAULT_COLOR, Task.DEFAULT_WIDTH, Task.DEFAULT_HEIGHT, Task.DEFAULT_POSITION, Task.DEFAULT_POSITION, "Activa", LocalDateTime.now(), isReminder ? reminderTextFieldDate.getLocalDateTime() : null);
-					taskManager.getTaskHandler().addTask(task);
-				} else {
-					Task task = taskManager.getTask();
-					task.setTitle(title);
-					task.setDescription(description);
-					if (isReminder) {
-						task.setReminderDate(reminderTextFieldDate.getLocalDateTime());
-					}
-					taskManager.getTaskHandler().updateTask(task);
-				}
-				Utils.closeWindow(event);
-			} catch (Exception e) {
-				e.printStackTrace();
+		if (!isValidData()) {
+			return;
+		}
+		try {
+			int selectedTab = tabPane.getSelectionModel().getSelectedIndex();
+			String title = null, description = null;
+			switch (selectedTab) {
+				case 0:
+					title = textTextFieldTitle.getText();
+					description = textTextAreaBody.getText();
+					break;
+				case 1:
+					title = reminderTextFieldTitle.getText();
+					description = reminderTextAreaBody.getText();
+					break;
+				default:
+					break;
 			}
+			boolean isReminder = selectedTab == 1;
+			if (taskManager.getTask() == null) {
+				ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {
+
+					@Override
+					public void onFinish(Object response) {
+						if (response == null) {
+							Utils.showError("Unable to insert task.");
+							return;
+						}
+						Task task = (Task) response;
+						taskManager.getTaskHandler().addTask(task);
+					}
+
+				}).performInsertTask(taskManager.getFolderId(), title, description, Task.DEFAULT_COLOR, Task.DEFAULT_WIDTH, Task.DEFAULT_HEIGHT, Task.DEFAULT_POSITION, Task.DEFAULT_POSITION, "Activa", LocalDateTime.now(), isReminder ? reminderTextFieldDate.getLocalDateTime() : null);
+			} else {
+				Task task = taskManager.getTask();
+				task.setTitle(title);
+				task.setDescription(description);
+				if (isReminder) {
+					task.setReminderDate(reminderTextFieldDate.getLocalDateTime());
+				}
+				ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {
+
+					@Override
+					public void onFinish(Object response) {
+						if (response == null) {
+							Utils.showError("Unable to update task info.");
+							return;
+						}
+						taskManager.getTaskHandler().updateTask(task);
+					}
+
+				}).performUpdateTaskInfo(task);
+			}
+			Utils.closeWindow(event);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

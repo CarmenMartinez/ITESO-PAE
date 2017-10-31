@@ -9,7 +9,6 @@ public class User {
 	private ObservableList<Folder> folders;
 
 	public User(int id, String name, String lastName, String userName, String email) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
