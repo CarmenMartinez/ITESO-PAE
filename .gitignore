@@ -2,3 +2,4 @@
 /target/
 dp.properties
 derby.log
+db.properties
