@@ -1,5 +1,10 @@
 package utils;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.concurrent.Callable;
@@ -68,13 +73,20 @@ public class ThreadHandler {
 			@Override
 			public User call() throws Exception {
 				User user = null;
-				try {
-					user = DBHandler.login(args[0], args[1]);
-					if (user == null) {
-						return null;
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							DBHandler.login(args[0], args[1]);
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 					}
-				} catch (SQLException e) {
-					e.printStackTrace();
+				}).start();
+				user = getUserWithSocket();
+				if (user == null) {
+					return null;
 				}
 				try {
 					user.setFolders(DBHandler.getUserFolders(user.getId()));
@@ -186,6 +198,34 @@ public class ThreadHandler {
 			}
 
 		});
+	}
+
+	private User getUserWithSocket() {
+		ServerSocket server = null;
+		Socket clientSocket = null;
+
+		User user = null;
+
+		try {
+			server = new ServerSocket(DBHandler.SOCKET_PORT);
+			System.out.println("Server listening...");
+			clientSocket = server.accept();
+
+			ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+
+			if ((user = (User) ois.readObject()) == null) {
+				System.out.println("Unable to get User from socket.");
+			}
+
+			oos.close();
+			ois.close();
+			server.close();
+
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 	public class ThreadHandlerException extends Exception {

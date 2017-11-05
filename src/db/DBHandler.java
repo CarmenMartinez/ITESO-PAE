@@ -1,7 +1,12 @@
 package db;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,6 +27,9 @@ import model.User;
 import utils.Utils;
 
 public class DBHandler {
+
+	public static final int SOCKET_PORT = 5555;
+	public static final String SOCKET_HOST = "localhost";
 
     private static Connection connection;
     private static Statement statement;
@@ -107,12 +115,12 @@ public class DBHandler {
         return statement;
     }
 
-    public static User login(String userName, String userPassword) throws SQLException {
+    public static void login(String userName, String userPassword) throws SQLException {
         // Select Customers query.
         String query = "SELECT * FROM Person WHERE (userName = '" + userName + "' OR email = '" + userName + "') AND password = '" + userPassword + "'";
         // Execute query
         ResultSet resultSet = executeQuery(query);
-        return resultSet.next()
+        User user = resultSet.next()
         		? new User(
 		                resultSet.getInt("id"),
 		                resultSet.getString("name"),
@@ -121,6 +129,29 @@ public class DBHandler {
 		                resultSet.getString("email")
 		          )
         		: null;
+        writeUserToSocket(user);
+    }
+
+    private static void writeUserToSocket(User user) {
+    	Socket socket;
+
+		try {
+			socket = new Socket(SOCKET_HOST, SOCKET_PORT);
+
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+
+			oos.writeObject(user);
+			oos.flush();
+			oos.close();
+			ois.close();
+			socket.close();
+
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     public static User createUser(String name, String lastName, String userName, String email, String password) throws SQLException {
