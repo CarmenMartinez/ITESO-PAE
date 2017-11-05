@@ -4,15 +4,12 @@ import interfaces.FolderHandler;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Alert.AlertType;
 import model.Folder;
 
 public class FolderCell extends ListCell<Folder> {
@@ -27,13 +24,13 @@ public class FolderCell extends ListCell<Folder> {
     public void updateItem(final Folder folder, boolean empty) {
         super.updateItem(folder, empty);
 
-        if (folder == null) {
+        if (folder == null || empty) {
         	setGraphic(null);
         	return;
         }
 
         final ImageView imageView = new ImageView(
-        	      new Image("http://www.iconsdb.com/icons/preview/gray/folder-xxl.png")
+        	      new Image("/img/folder.png")
         	    );
         imageView.setFitHeight(40);
         imageView.setFitWidth(40);
