@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class Utils {
@@ -33,7 +34,10 @@ public class Utils {
             if (cssLocation != null) {
             	scene.getStylesheets().add(parent.getClass().getClassLoader().getResource(cssLocation).toExternalForm());
             }
-
+            if (!fxmlLocation.toLowerCase().contains("home")) {
+        		targetStage.setResizable(false);
+        		targetStage.initStyle(StageStyle.UTILITY);
+        	}
             if (stage == null) {
             	targetStage.initModality(Modality.APPLICATION_MODAL);
             	targetStage.setUserData(userData);
