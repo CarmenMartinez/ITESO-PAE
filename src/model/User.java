@@ -1,8 +1,12 @@
 package model;
 
+import java.io.Serializable;
+
 import javafx.collections.ObservableList;
 
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = 683539505549673074L;
 
 	private int id;
 	private String name, lastName, userName, email;
