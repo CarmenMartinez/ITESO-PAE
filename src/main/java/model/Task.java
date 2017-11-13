@@ -1,8 +1,14 @@
 package main.java.model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import org.controlsfx.control.Notifications;
+
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -22,6 +28,10 @@ public class Task {
 
 	private NumberAttributes delta, size;
 
+	private Notifications notification;
+	private Timer timer;
+	private TimerTask timerTask;
+
 	public Task(int id, String title, String description, double xPosition, double yPosition, double width, double height, String color, String status, LocalDateTime creationDate, LocalDateTime reminderDate) {
 		this.id = id;
 		this.title = new SimpleStringProperty(title);
@@ -34,6 +44,7 @@ public class Task {
 		this.reminderDate = reminderDate;
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
 		this.status = bundle.getString("task_pending");
+		setNotificationTimer();
 	}
 
 	public int getId() {
@@ -98,6 +109,7 @@ public class Task {
 
 	public void setReminderDate(LocalDateTime reminderDate) {
 		this.reminderDate = reminderDate;
+		setNotificationTimer();
 	}
 
 	public LocalDateTime getReminderDate() {
@@ -137,6 +149,30 @@ public class Task {
 			this.x = x;
 			this.y = y;
 		}
+	}
+
+	private void setNotificationTimer() {
+		if (!isReminder()) return;
+		long delay = this.reminderDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - System.currentTimeMillis();
+		if (delay < 0) return;
+		if (timer != null) {
+			timerTask.cancel();
+			timer.cancel();
+			timer.purge();
+		}
+		notification = Notifications.create()
+	        .title(getTitle())
+	        .text(getDescription());
+		timer = new Timer();
+		timerTask = new TimerTask() {
+
+			@Override
+			public void run() {
+				Platform.runLater(() -> notification.showInformation());
+			}
+
+		};
+		timer.schedule(timerTask, delay);
 	}
 
 	@Override

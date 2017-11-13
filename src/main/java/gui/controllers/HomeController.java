@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
+import javax.management.Notification;
+
+import org.controlsfx.control.Notifications;
+
 import main.java.gui.views.FolderCell;
 import main.java.interfaces.FolderHandler;
 import main.java.interfaces.RunnableTask;
