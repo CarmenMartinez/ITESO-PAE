@@ -232,7 +232,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 						folder.getName().compareTo(actualFolder.getName()) < 0)
 					break;
 			} else {
-				if (!actualFolder.isFavorite()) continue;
+				if (actualFolder.isFavorite()) continue;
 				if (folder.getName().compareTo(actualFolder.getName()) < 0) break;
 			}
 		}
