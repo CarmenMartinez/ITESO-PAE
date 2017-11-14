@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
@@ -11,11 +12,11 @@
    <children>
       <Pane prefHeight="257.0" prefWidth="240.0">
          <children>
-            <TextField fx:id="textFieldName" id="input-text" layoutX="35.0" layoutY="84.0" promptText="%login_name" />
+            <TextField id="input-text" fx:id="textFieldName" layoutX="35.0" layoutY="84.0" promptText="%login_name" />
             <Label id="app-name" layoutX="76.0" layoutY="43.0" text="TasksFx" />
-            <TextField fx:id="textFieldPassword" id="input-text" layoutX="35.0" layoutY="134.0" promptText="%login_password" />
-            <Button id="button-log" onAction="#login" layoutX="35.0" layoutY="184.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="170.0" text="%main_login" />
-            <Hyperlink id="create-account" layoutX="58.0" layoutY="219.0"  prefHeight="20.0" prefWidth="125.0" text="%login_create" onAction="#createAccount" />
+            <Button id="button-log" layoutX="35.0" layoutY="184.0" mnemonicParsing="false" onAction="#login" prefHeight="26.0" prefWidth="170.0" text="%main_login" />
+            <Hyperlink id="create-account" layoutX="58.0" layoutY="219.0" onAction="#createAccount" prefHeight="20.0" prefWidth="125.0" text="%login_create" />
+            <PasswordField id="input-text" fx:id="passwordField" layoutX="35.0" layoutY="138.0" promptText="%login_password" />
          </children>
       </Pane>
    </children>
