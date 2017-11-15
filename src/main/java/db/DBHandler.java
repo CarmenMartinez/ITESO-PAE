@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -117,9 +118,15 @@ public class DBHandler {
 
     public static void login(String userName, String userPassword) throws SQLException {
         // Select Customers query.
-        String query = "SELECT * FROM Person WHERE (userName = '" + userName + "' OR email = '" + userName + "') AND password = '" + userPassword + "'";
+        String query = "SELECT * FROM PERSON WHERE (userName = '" + userName + "' OR email = '" + userName + "') AND password = '" + userPassword + "'";
         // Execute query
-        ResultSet resultSet = executeQuery(query);
+        ResultSet resultSet = null;
+        try{
+        resultSet = executeQuery(query);
+        }catch(SQLSyntaxErrorException e){
+        	System.out.println("Hola");
+        	e.printStackTrace();
+        }
         User user = resultSet.next()
         		? new User(
 		                resultSet.getInt("id"),
@@ -129,6 +136,7 @@ public class DBHandler {
 		                resultSet.getString("email")
 		          )
         		: null;
+
         writeUserToSocket(user);
     }
 
@@ -155,13 +163,13 @@ public class DBHandler {
     }
 
     public static User createUser(String name, String lastName, String userName, String email, String password) throws SQLException {
-    	String queryUsers = "SELECT * FROM Person WHERE userName = '" + userName + "'";
+    	String queryUsers = "SELECT * FROM PERSON WHERE userName = '" + userName + "'";
     	ResultSet resultSetUsers = executeQuery(queryUsers);
     	boolean repeatedUser = resultSetUsers.next();
     	resultSetUsers.close();
     	if (repeatedUser) return null;
     	// Create the sql statement.
-        String query = "INSERT INTO Person(name, lastName, userName, email, password) VALUES(?, ?, ?, ?, ?)";
+        String query = "INSERT INTO PERSON(name, lastName, userName, email, password) VALUES(?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = getPreparedStatement(query);
         // Bind all the data
         preparedStatement.setString(1, name);
