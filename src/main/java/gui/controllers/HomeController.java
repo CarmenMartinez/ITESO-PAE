@@ -174,7 +174,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
 		CheckBox status = new CheckBox(bundle.getString("task_completed"));
 
-		
+
 		buttonEdit.setOnAction((event) -> {
 			window.toFront();
 			taskManager.setTask(task);
@@ -186,7 +186,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		} else {
 			tp.setText(task.getStatus());
 		}
-		
+
 		status.selectedProperty().addListener(new ChangeListener<Boolean>() {
             public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, Boolean old_val, Boolean new_val) {
             	 	if(new_val) {
@@ -198,15 +198,15 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
         			tp.setText(task.getStatus());
             }
         });
-		
+
 		if(task.getStatus().equals(bundle.getString("task_pending"))) {
 			status.setSelected(false);
 		}
 		else{
 			status.setSelected(true);
 		}
-		
-		
+
+
 		buttonEdit.getStyleClass().add("buttons-task");
 		buttonInfo.getStyleClass().add("buttons-task");
 		buttonInfo.setTooltip(tp);
@@ -297,17 +297,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	public void onFolderSelected(Folder folder) {
 		currentFolder = folder;
 		taskManager.setFolderId(folder.getId());
-		if(lastid == null){
-			lastid = folders.indexOf(currentFolder);
-			/*folder.button.setStyle("-fx-background-color: #999999;" +
-			"-fx-text-fill: #fff;");*/
-		}else{
-			Folder f = folders.get(lastid);
-			f.button.setStyle("-fx-color: #357bd8;" + "-fx-text-fill: black;");
-			lastid = folders.indexOf(folder);
-			/*folder.button.setStyle("-fx-background-color: #999999");*/
-		}
-
+		//currentFolder.button.setStyle("-fx-background-color: #999999");
 
 		if (!folder.hasTasksLoaded()) {
 			try {
