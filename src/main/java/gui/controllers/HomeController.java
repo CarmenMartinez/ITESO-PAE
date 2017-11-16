@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -170,6 +171,10 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		Button buttonEdit = new Button("",editIcon);
 		Button buttonInfo = new Button("",infoIcon);
 
+		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
+		CheckBox status = new CheckBox(bundle.getString("task_completed"));
+
+		
 		buttonEdit.setOnAction((event) -> {
 			window.toFront();
 			taskManager.setTask(task);
@@ -181,13 +186,38 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		} else {
 			tp.setText(task.getStatus());
 		}
+		
+		status.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, Boolean old_val, Boolean new_val) {
+            	 	if(new_val) {
+            	 		task.setStatus(bundle.getString("task_completed"));
+            	 	}
+            	 	else{
+            	 		task.setStatus(bundle.getString("task_pending"));
+            	 	}
+        			tp.setText(task.getStatus());
+            }
+        });
+		
+		if(task.getStatus().equals(bundle.getString("task_pending"))) {
+			status.setSelected(false);
+		}
+		else{
+			status.setSelected(true);
+		}
+		
+		
 		buttonEdit.getStyleClass().add("buttons-task");
 		buttonInfo.getStyleClass().add("buttons-task");
 		buttonInfo.setTooltip(tp);
 		ScrollPane scrollPane = new ScrollPane(labelDescription);
 		scrollPane.getStyleClass().add("task-description");
+
 		scrollPane.setStyle("-fx-background: " + task.getOnlyColor());
 		HBox hbox = new HBox(buttonEdit,buttonInfo);
+
+		HBox hbox = new HBox(status,buttonEdit,buttonInfo);
+
 		hbox.setAlignment(Pos.BOTTOM_RIGHT);
 		VBox vBox = new VBox(scrollPane, hbox);
 		vBox.setAlignment(Pos.TOP_CENTER);
