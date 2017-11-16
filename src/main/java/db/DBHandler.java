@@ -122,10 +122,9 @@ public class DBHandler {
         // Execute query
         ResultSet resultSet = null;
         try{
-        resultSet = executeQuery(query);
+        		resultSet = executeQuery(query);
         }catch(SQLSyntaxErrorException e){
-        	System.out.println("Hola");
-        	e.printStackTrace();
+        		e.printStackTrace();
         }
         User user = resultSet.next()
         		? new User(
@@ -310,7 +309,6 @@ public class DBHandler {
     }
 
     public static Task updateTaskAttributes(Task task) throws SQLException {
-    	System.out.println("before" + task.getColor());
     	String query = "UPDATE Task SET width = ?, height = ?, xPosition = ?, yPosition = ?, color = ? WHERE id = " + task.getId();;
     	PreparedStatement preparedStatement = getPreparedStatement(query);
     	preparedStatement.setDouble(1, task.getWidth());

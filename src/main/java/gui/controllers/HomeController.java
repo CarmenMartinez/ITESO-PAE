@@ -214,7 +214,6 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		scrollPane.getStyleClass().add("task-description");
 
 		scrollPane.setStyle("-fx-background: " + task.getOnlyColor());
-		HBox hbox = new HBox(buttonEdit,buttonInfo);
 
 		HBox hbox = new HBox(status,buttonEdit,buttonInfo);
 
