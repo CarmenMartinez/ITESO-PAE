@@ -184,18 +184,6 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		});
 
 
-		status.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, Boolean old_val, Boolean new_val) {
-            	 	if(new_val) {
-            	 		task.setStatus(bundle.getString("task_completed"));
-            	 	}
-            	 	else{
-            	 		task.setStatus(bundle.getString("task_pending"));
-            	 	}
-        			tp.setText(task.getStatus());
-            }
-        });
-
 		if(task.getStatus().equals(bundle.getString("task_pending"))) {
 			status.setSelected(false);
 		}
@@ -259,8 +247,6 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	private void refreshAnchorPane(Folder folder) {
 		anchorPaneTasks.getChildren().clear();
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
-
-
 		ObservableList<Task> tasks = folder.getTasks();
 		if (tasks == null) return;
 		tasks.forEach(task -> {
@@ -272,7 +258,6 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	private void refreshAnchorPaneCompletedTasks(Folder folder) {
 		anchorPaneCompletedTasks.getChildren().clear();
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
-
 		ObservableList<Task> tasks = folder.getTasks();
 		if (tasks == null) return;
 		tasks.forEach(task -> {
