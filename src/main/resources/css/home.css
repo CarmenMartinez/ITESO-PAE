@@ -1,10 +1,14 @@
-.button{
-    -fx-background-color: transparent;
+#button-home {
+	-fx-color: #357bd8;
+  	-fx-font-size: 16px;
+}
+
+#button-home:hover {
+	-fx-background-color: #457fd8;
 }
 
 .window {
 	-fx-background-color: #D8D8D8;
-
 }
 
 .button:hover {
