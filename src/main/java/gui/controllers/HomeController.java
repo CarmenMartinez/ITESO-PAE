@@ -376,4 +376,18 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		updateTaskUI(task);
 	}
 
+	@Override
+	public void onFolderRemoved(Folder folder) {
+		folders.remove(folder);
+		folder.setFavorite(false);
+		addFolder(folder);
+	}
+
+	@Override
+	public void onFolderAdded(Folder folder) {
+		folders.remove(folder);
+		folder.setFavorite(true);
+		addFolder(folder);
+	}
+
 }
