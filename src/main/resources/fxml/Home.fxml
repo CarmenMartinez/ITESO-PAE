@@ -5,10 +5,12 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.gui.controllers.HomeController">
+<BorderPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.gui.controllers.HomeController">
    <center>
       <SplitPane dividerPositions="0.35" BorderPane.alignment="CENTER">
         <items>
@@ -20,20 +22,27 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button layoutX="348.0" layoutY="17.0" mnemonicParsing="false" onAction="#addTask" text="%home_task_add" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
-                  <Button mnemonicParsing="false" onAction="#saveTasks" text="Save Tasks" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
-                  <ScrollPane layoutX="16.0" layoutY="55.0" prefHeight="623.0" prefWidth="359.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0">
-                     <content>
-                        <AnchorPane fx:id="anchorPaneTasks" prefHeight="790.0" prefWidth="477.0">
-                           <children>
-                           </children>
-                        </AnchorPane>
-                     </content>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </ScrollPane>
-               </children></AnchorPane>
+                  <TabPane prefHeight="620.0" prefWidth="578.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="%home_tab_tasks">
+                      <AnchorPane layoutX="16.0" layoutY="55.0" prefHeight="623.0" prefWidth="359.0">
+                        <ScrollPane layoutX="16.0" layoutY="55.0" prefHeight="523.0" prefWidth="359.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0">
+                           <content>
+                              <AnchorPane fx:id="anchorPaneTasks" prefHeight="790.0" prefWidth="477.0" />
+                           </content>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </ScrollPane>
+                              <Button mnemonicParsing="false" onAction="#addTask" text="%home_task_add" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                              <Button mnemonicParsing="false" onAction="#saveTasks" text="Save Tasks" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                      </AnchorPane>
+                      </Tab>
+                      <Tab text="%home_tab_completed_tasks" />
+                    </tabs>
+                  </TabPane>
+               </children>
+             </AnchorPane>
         </items>
       </SplitPane>
    </center>

@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 
 public class Folder {
 
@@ -17,6 +18,8 @@ public class Folder {
 	private boolean isFavorite;
 	private String status;
 	private LocalDateTime creationDate;
+
+	public Button button;
 
 	private boolean hasTasksLoaded;
 

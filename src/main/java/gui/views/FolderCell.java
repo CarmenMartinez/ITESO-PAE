@@ -1,9 +1,11 @@
 package main.java.gui.views;
 
+import main.java.gui.controllers.HomeController;
 import main.java.interfaces.FolderHandler;
 
 import java.util.ResourceBundle;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -38,10 +40,28 @@ public class FolderCell extends ListCell<Folder> {
         imageView.setFitHeight(40);
         imageView.setFitWidth(40);
         Button button = new Button(folder.getName(), imageView);
+        folder.button = button;
         final ContextMenu contextMenu = new ContextMenu();
         final MenuItem item1 = new MenuItem(bundle.getString("delete"));
+        final MenuItem item2 = new MenuItem(bundle.getString("remove"));
+        final MenuItem item3 = new MenuItem(bundle.getString("add"));
+
+        ObservableList<Folder> folders = new HomeController().getFolders();
+        item2.setOnAction(e -> {folders.remove(folder);});
+        item3.setOnAction(e -> {
+        	folders.remove(folder);
+        	new HomeController().addFolder(folder);
+        });
+
         item1.setOnAction(e -> { folderHandler.onFolderDeleted(folder); });
         contextMenu.getItems().add(item1);
+
+        if (folder.isFavorite()) {
+        	contextMenu.getItems().add(item2);
+        } else {
+        	contextMenu.getItems().add(item3);
+        }
+
         button.setContextMenu(contextMenu);
         // Add class name to this button to apply styles from the CSS file.
         button.getStyleClass().add("folder");
@@ -49,7 +69,9 @@ public class FolderCell extends ListCell<Folder> {
         button.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
+
 				folderHandler.onFolderSelected(folder);
+				
 			}
 		});
 
