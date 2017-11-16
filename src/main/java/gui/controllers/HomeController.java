@@ -81,7 +81,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	    		onFolderSelected(folders.get(0));
 	    		onFolderSelectedCompletedTasks(folders.get(0));
 	    	}
-	    	
+
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
@@ -170,15 +170,15 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		else{
 			status.setSelected(true);
 		}
-		
-		
+
+
 		tp = new Tooltip();
 		if (task.isReminder()) {
 			tp.setText(task.getStatus() + "\n" + "Fecha: " + task.getReminderDate().toString());
 		} else {
 			tp.setText(task.getStatus());
 		}
-		
+
 		status.setOnAction((event) -> {
 			onStatusChanged(task, status.isSelected());
 		});
@@ -255,7 +255,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		ScrollPane scroll = (ScrollPane) window.getContentPane().getChildren().get(0);
 		scroll.setStyle("-fx-background:" + task.getOnlyColor());
 	}
-	
+
 	private void refreshAnchorPane(Folder folder) {
 		anchorPaneTasks.getChildren().clear();
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
@@ -268,7 +268,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 				anchorPaneTasks.getChildren().add(createTaskUI(task));
 		});
 	}
-	
+
 	private void refreshAnchorPaneCompletedTasks(Folder folder) {
 		anchorPaneCompletedTasks.getChildren().clear();
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
@@ -341,7 +341,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 						}
 						folder.setTasks((ObservableList<Task>) response);
 						refreshAnchorPane(folder);
-						
+
 					}
 
 				}).performGetFolderTasks(folder.getId());
@@ -424,8 +424,8 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		}
 		else{
 	 			task.setStatus(bundle.getString("task_pending"));
-	 	}	
-		refreshAnchorPane(currentFolder); 	
+	 	}
+		refreshAnchorPane(currentFolder);
 		refreshAnchorPaneCompletedTasks(currentFolder);
 	}
 
@@ -446,9 +446,9 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 			}).performDeleteTask(task);
 		} catch (InterruptedException | ExecutionException | ThreadHandlerException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
-	
+
 
 	@Override
 	public void onFolderSelectedCompletedTasks(Folder folder) {
@@ -479,7 +479,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 			refreshAnchorPaneCompletedTasks(folder);
 		}
 	}
-	 
+
 
 
 }
