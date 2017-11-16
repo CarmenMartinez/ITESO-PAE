@@ -46,12 +46,8 @@ public class FolderCell extends ListCell<Folder> {
         final MenuItem item2 = new MenuItem(bundle.getString("remove"));
         final MenuItem item3 = new MenuItem(bundle.getString("add"));
 
-        ObservableList<Folder> folders = new HomeController().getFolders();
-        item2.setOnAction(e -> {folders.remove(folder);});
-        item3.setOnAction(e -> {
-        	folders.remove(folder);
-        	new HomeController().addFolder(folder);
-        });
+        item2.setOnAction(e -> {folderHandler.onFolderRemoved(folder);});
+        item3.setOnAction(e -> {folderHandler.onFolderAdded(folder);});
 
         item1.setOnAction(e -> { folderHandler.onFolderDeleted(folder); });
         contextMenu.getItems().add(item1);

@@ -16,7 +16,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#addFolder" text="%home_folder_add" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                  <Button id="button-home" mnemonicParsing="false" onAction="#addFolder" text="%home_folder_add" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
                   <ListView fx:id="listViewFolders" layoutX="23.0" layoutY="55.0" prefHeight="622.0" prefWidth="348.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0" />
                </children>
             </AnchorPane>
@@ -34,8 +34,8 @@
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </padding>
                         </ScrollPane>
-                              <Button mnemonicParsing="false" onAction="#addTask" text="%home_task_add" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
-                              <Button mnemonicParsing="false" onAction="#saveTasks" text="Save Tasks" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                              <Button id="button-home" mnemonicParsing="false" onAction="#addTask" text="%home_task_add" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                              <Button id="button-home" mnemonicParsing="false" onAction="#saveTasks" text="Save Tasks" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
                       </AnchorPane>
                       </Tab>
                       <Tab text="%home_tab_completed_tasks" />
