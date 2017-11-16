@@ -9,5 +9,6 @@ public interface FolderHandler {
 	public void onFolderDeleted(Folder folder);
 	public void onFolderRemoved(Folder folder);
 	public void onFolderAdded(Folder folder);
+	public void onFolderSelectedCompletedTasks(Folder folder);
 
 }
