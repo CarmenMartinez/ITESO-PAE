@@ -63,8 +63,6 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 
 	private Tooltip tp;
 
-	private Integer lastid;
-
     public HomeController() {
 		taskManager = new TaskManager().setTaskHandler(this);
 	}
@@ -296,9 +294,24 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	@Override
 	public void onFolderSelected(Folder folder) {
 		currentFolder = folder;
+
 		taskManager.setFolderId(folder.getId());
 		//currentFolder.button.setStyle("-fx-background-color: #999999");
-
+		for(Folder foldert: folders){
+			if(foldert.getId() != currentFolder.getId()){
+				try{
+				foldert.button.setStyle("-fx-background-color: #D8D8D8;");
+				}catch(NullPointerException e){
+					//foldert.button.setStyle("-fx-background-color: #D8D8D8;");
+				}
+			}else{
+				try{
+					foldert.button.setStyle("-fx-background-color: #999999;");
+					}catch(NullPointerException e){
+						//foldert.button.setStyle("-fx-background-color: #999999;");
+					}
+		}
+		}
 		if (!folder.hasTasksLoaded()) {
 			try {
 				ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {
@@ -379,5 +392,12 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		folder.setFavorite(true);
 		addFolder(folder);
 	}
+
+	@Override
+	public ObservableList<Folder> getFoldersFFH() {
+		// TODO Auto-generated method stub
+		return this.folders;
+	}
+
 
 }

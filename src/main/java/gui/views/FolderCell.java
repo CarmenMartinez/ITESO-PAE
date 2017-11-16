@@ -68,8 +68,8 @@ public class FolderCell extends ListCell<Folder> {
         button.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-
 				folderHandler.onFolderSelected(folder);
+
 			}
 		});
 
