@@ -39,6 +39,7 @@
                       </AnchorPane>
                       </Tab>
                       <Tab text="%home_tab_completed_tasks" >
+                        <AnchorPane layoutX="16.0" layoutY="55.0" prefHeight="623.0" prefWidth="359.0">
 	                        <ScrollPane layoutX="16.0" layoutY="55.0" prefHeight="523.0" prefWidth="359.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0">
 	                           <content>
 	                              <AnchorPane fx:id="anchorPaneCompletedTasks" prefHeight="790.0" prefWidth="477.0" />
@@ -46,7 +47,9 @@
 	                           <padding>
 	                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
 	                           </padding>
-	                        </ScrollPane>	                    
+	                        </ScrollPane>
+	                        <Button id="button-home" mnemonicParsing="false" onAction="#saveTasks" text="Save Tasks" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
+                      </AnchorPane>	                    
                       </Tab>
                     </tabs>
                   </TabPane>

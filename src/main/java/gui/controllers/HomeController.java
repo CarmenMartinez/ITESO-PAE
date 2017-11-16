@@ -311,21 +311,22 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		currentFolder = folder;
 
 		taskManager.setFolderId(folder.getId());
-		//currentFolder.button.setStyle("-fx-background-color: #999999");
 		for(Folder foldert: folders){
 			if(foldert.getId() != currentFolder.getId()){
 				try{
-				foldert.button.setStyle("-fx-background-color: #D8D8D8;");
-				}catch(NullPointerException e){
-					//foldert.button.setStyle("-fx-background-color: #D8D8D8;");
+					foldert.button.setStyle("-fx-background-color: #D8D8D8;");
+				}
+				catch(NullPointerException e){
+				
 				}
 			}else{
 				try{
 					foldert.button.setStyle("-fx-background-color: #999999;");
-					}catch(NullPointerException e){
-						//foldert.button.setStyle("-fx-background-color: #999999;");
-					}
-		}
+				}
+				catch(NullPointerException e){
+				
+				}
+			}
 		}
 		if (!folder.hasTasksLoaded()) {
 			try {
