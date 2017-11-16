@@ -44,8 +44,7 @@ public class Task {
 		this.status = status;
 		this.creationDate = creationDate;
 		this.reminderDate = reminderDate;
-		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
-		this.status = bundle.getString("task_pending");
+		this.status = status;
 		setNotificationTimer();
 	}
 

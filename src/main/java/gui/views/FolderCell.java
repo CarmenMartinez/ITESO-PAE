@@ -1,11 +1,9 @@
 package main.java.gui.views;
 
-import main.java.gui.controllers.HomeController;
 import main.java.interfaces.FolderHandler;
 
 import java.util.ResourceBundle;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -22,6 +20,7 @@ public class FolderCell extends ListCell<Folder> {
 	private FolderHandler folderHandler;
     private ResourceBundle bundle;
 
+
 	public FolderCell(FolderHandler folderHandler) {
 		this.folderHandler = folderHandler;
         bundle = ResourceBundle.getBundle("i18n/folder");
@@ -36,7 +35,7 @@ public class FolderCell extends ListCell<Folder> {
         	return;
         }
 
-        final ImageView imageView = new ImageView(new Image("img/folder.png"));
+        final ImageView imageView = new ImageView(new Image((folder.isFavorite() ? "img/favoriteFolder.png" : "img/folder.png")));
         imageView.setFitHeight(40);
         imageView.setFitWidth(40);
         Button button = new Button(folder.getName(), imageView);
@@ -62,12 +61,17 @@ public class FolderCell extends ListCell<Folder> {
         // Add class name to this button to apply styles from the CSS file.
         button.getStyleClass().add("folder");
         button.setAlignment(Pos.BASELINE_LEFT);
+
+
         button.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-
 				folderHandler.onFolderSelected(folder);
-				
+
+
+
+				folderHandler.onFolderSelectedCompletedTasks(folder);
+
 			}
 		});
 

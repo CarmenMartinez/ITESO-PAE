@@ -8,6 +8,7 @@ import main.java.interfaces.RunnableTask;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import main.java.model.User;
 import main.java.utils.ThreadHandler;
@@ -16,7 +17,8 @@ import main.java.utils.Utils;
 
 public class CreateAccountController implements Initializable {
 
-	@FXML private TextField textFieldFirstName, textFieldLastName, textFieldEmail, textFieldPassword, textFieldUserName;
+	@FXML private TextField textFieldFirstName, textFieldLastName, textFieldEmail, textFieldUserName;
+	@FXML private PasswordField passWordField;
 
 	public void initialize(URL arg0, ResourceBundle arg1) {}
 
@@ -41,7 +43,7 @@ public class CreateAccountController implements Initializable {
 					Utils.closeWindow(event);
 				}
 
-			}).performCreateUser(textFieldFirstName.getText(), textFieldLastName.getText(), textFieldUserName.getText(), textFieldEmail.getText(), textFieldPassword.getText());
+			}).performCreateUser(textFieldFirstName.getText(), textFieldLastName.getText(), textFieldUserName.getText(), textFieldEmail.getText(), passWordField.getText());
 		} catch (InterruptedException | ExecutionException | ThreadHandlerException e) {
 			e.printStackTrace();
 		}
@@ -53,7 +55,7 @@ public class CreateAccountController implements Initializable {
 				Utils.isValidInput(textFieldLastName.getText()) &&
 				Utils.isValidInput(textFieldEmail.getText()) &&
 				Utils.isValidInput(textFieldUserName.getText()) &&
-				Utils.isValidInput(textFieldPassword.getText());
+				Utils.isValidInput(passWordField.getText());
 
 	}
 
