@@ -1,6 +1,4 @@
-.button{
-    -fx-background-color: transparent;
-}
+
 
 .window {
 	-fx-background-color: #D8D8D8;
@@ -49,6 +47,15 @@
 .buttons-task:hover {
 	-fx-background-color: #D0D0D0;
 	-fx-background-radius: 40px;
+}
+
+#button-home{
+	-fx-color: #357BD8;
+	-fx-font-size: 16px;
+}
+
+#button-home:hover{
+	-fx-background-color: #457FD8;
 }
 
 .task-description {

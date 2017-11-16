@@ -214,7 +214,6 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		scrollPane.getStyleClass().add("task-description");
 
 		scrollPane.setStyle("-fx-background: " + task.getOnlyColor());
-		HBox hbox = new HBox(buttonEdit,buttonInfo);
 
 		HBox hbox = new HBox(status,buttonEdit,buttonInfo);
 
@@ -375,6 +374,20 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		List<Task> tasks = currentFolder.getTasks();
 		tasks.set(tasks.indexOf(task), task);
 		updateTaskUI(task);
+	}
+
+	@Override
+	public void onFolderRemoved(Folder folder) {
+		folders.remove(folder);
+		folder.setFavorite(false);
+		addFolder(folder);
+	}
+
+	@Override
+	public void onFolderAdded(Folder folder) {
+		folders.remove(folder);
+		folder.setFavorite(true);
+		addFolder(folder);
 	}
 
 }
