@@ -20,6 +20,7 @@ public class FolderCell extends ListCell<Folder> {
 	private FolderHandler folderHandler;
     private ResourceBundle bundle;
 
+
 	public FolderCell(FolderHandler folderHandler) {
 		this.folderHandler = folderHandler;
         bundle = ResourceBundle.getBundle("i18n/folder");
@@ -60,6 +61,8 @@ public class FolderCell extends ListCell<Folder> {
         // Add class name to this button to apply styles from the CSS file.
         button.getStyleClass().add("folder");
         button.setAlignment(Pos.BASELINE_LEFT);
+
+
         button.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {

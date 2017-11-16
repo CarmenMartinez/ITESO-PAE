@@ -19,7 +19,8 @@ import main.java.utils.Utils;
 
 public class LoginController implements Initializable {
 
-	@FXML private TextField textFieldName, textFieldPassword;
+	@FXML private TextField textFieldName;
+	@FXML private PasswordField passwordField;
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
@@ -35,7 +36,8 @@ public class LoginController implements Initializable {
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/login");
 		String userName = textFieldName.getText();
 		//PasswordField userPassword = new P
-		String userPassword = textFieldPassword.getText();
+		//String userPassword = textFieldPassword.getText();
+		String userPassword = passwordField.getText();
 		if (!Utils.isValidInput(userName) || !Utils.isValidInput(userPassword)) {
 			Utils.showError(bundle.getString("invalid_input"));
 			return;
