@@ -8,6 +8,8 @@ import javax.management.Notification;
 
 import org.controlsfx.control.Notifications;
 
+import com.sun.prism.paint.Color;
+
 import main.java.gui.views.FolderCell;
 import main.java.interfaces.FolderHandler;
 import main.java.interfaces.RunnableTask;
@@ -61,9 +63,15 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 
 	private Tooltip tp;
 
+	private Integer lastid;
+
     public HomeController() {
 		taskManager = new TaskManager().setTaskHandler(this);
 	}
+
+    public ObservableList<Folder> getFolders() {
+    	return folders;
+    }
 
     @Override
 	public void onReady() {
@@ -122,6 +130,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 
 	private Window createTaskUI(Task task) {
 		final Window window = new Window(task.getTitle());
+		window.setStyle(task.getColor());
 		window.setPrefSize(task.getWidth(), task.getHeight());
 		window.setLayoutX(task.getXPosition());
 		window.setLayoutY(task.getYPosition());
@@ -203,12 +212,16 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		buttonInfo.setTooltip(tp);
 		ScrollPane scrollPane = new ScrollPane(labelDescription);
 		scrollPane.getStyleClass().add("task-description");
+
+		scrollPane.setStyle("-fx-background: " + task.getOnlyColor());
+		HBox hbox = new HBox(buttonEdit,buttonInfo);
+
 		HBox hbox = new HBox(status,buttonEdit,buttonInfo);
+
 		hbox.setAlignment(Pos.BOTTOM_RIGHT);
 		VBox vBox = new VBox(scrollPane, hbox);
 		vBox.setAlignment(Pos.TOP_CENTER);
 		vBox.setSpacing(10);
-		vBox.setStyle(task.getColor());
 		window.setContentPane(vBox);
 		window.setBoundsListenerEnabled(false);
 		window.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
@@ -240,12 +253,15 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	private void updateTaskUI(Task task) {
 		Window window = (Window) anchorPaneTasks.getChildren().get(anchorPaneTasks.getChildren().size() - 1);
 		window.setTitle(task.getTitle());
+		window.setStyle(task.getColor());
 		Label label = (Label) ((ScrollPane) window.getContentPane().getChildren().get(0)).getContent();
 		label.setText(task.getDescription());
+		ScrollPane scroll = (ScrollPane) window.getContentPane().getChildren().get(0);
+		scroll.setStyle("-fx-background:" + task.getOnlyColor());
 	}
-
 	private void refreshAnchorPane(Folder folder) {
 		anchorPaneTasks.getChildren().clear();
+
 		ObservableList<Task> tasks = folder.getTasks();
 		if (tasks == null) return;
 		tasks.forEach(task -> {
@@ -282,6 +298,18 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	public void onFolderSelected(Folder folder) {
 		currentFolder = folder;
 		taskManager.setFolderId(folder.getId());
+		if(lastid == null){
+			lastid = folders.indexOf(currentFolder);
+			/*folder.button.setStyle("-fx-background-color: #999999;" +
+			"-fx-text-fill: #fff;");*/
+		}else{
+			Folder f = folders.get(lastid);
+			f.button.setStyle("-fx-color: #357bd8;" + "-fx-text-fill: black;");
+			lastid = folders.indexOf(folder);
+			/*folder.button.setStyle("-fx-background-color: #999999");*/
+		}
+
+
 		if (!folder.hasTasksLoaded()) {
 			try {
 				ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {

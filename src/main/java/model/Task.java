@@ -11,10 +11,12 @@ import org.controlsfx.control.Notifications;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 
 public class Task {
 
-	public static final String DEFAULT_COLOR = "#f4f4f4";
+	public static final String DEFAULT_COLOR = "#b3b3b";
 	public static final double DEFAULT_POSITION = 10.0;
 	public static final double DEFAULT_WIDTH = 200.0;
 	public static final double DEFAULT_HEIGHT = 120.0;
@@ -97,6 +99,10 @@ public class Task {
 
 	public double getHeight() {
 		return this.size.y;
+	}
+
+	public String getOnlyColor() {
+		return this.color;
 	}
 
 	public String getColor() {

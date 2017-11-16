@@ -10,6 +10,7 @@ import main.java.interfaces.RunnableTask;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import main.java.model.User;
 import main.java.utils.ThreadHandler;
@@ -33,6 +34,7 @@ public class LoginController implements Initializable {
 	@FXML public void login(ActionEvent event) {
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/login");
 		String userName = textFieldName.getText();
+		//PasswordField userPassword = new P
 		String userPassword = textFieldPassword.getText();
 		if (!Utils.isValidInput(userName) || !Utils.isValidInput(userPassword)) {
 			Utils.showError(bundle.getString("invalid_input"));
