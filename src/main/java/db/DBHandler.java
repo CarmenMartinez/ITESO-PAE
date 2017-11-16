@@ -296,12 +296,13 @@ public class DBHandler {
     }
 
     public static Task updateTaskInfo(Task task) throws SQLException {
-    	String query = "UPDATE Task SET title = ?, description = ?, reminderDate = ?, color = ? WHERE id = " + task.getId();
+    	String query = "UPDATE Task SET title = ?, description = ?, reminderDate = ?, color = ?, status = ? WHERE id = " + task.getId();
     	PreparedStatement preparedStatement = getPreparedStatement(query);
     	preparedStatement.setString(1, task.getTitle());
     	preparedStatement.setString(2, task.getDescription());
     	preparedStatement.setTimestamp(3, task.getReminderDate() != null ? new Timestamp(task.getReminderDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()) : null);
     	preparedStatement.setString(4, task.getOnlyColor());
+    preparedStatement.setString(5, task.getStatus());
     	// Execute and close.
         preparedStatement.execute();
         preparedStatement.close();
@@ -309,13 +310,14 @@ public class DBHandler {
     }
 
     public static Task updateTaskAttributes(Task task) throws SQLException {
-    	String query = "UPDATE Task SET width = ?, height = ?, xPosition = ?, yPosition = ?, color = ? WHERE id = " + task.getId();;
+    	String query = "UPDATE Task SET width = ?, height = ?, xPosition = ?, yPosition = ?, color = ?, status = ? WHERE id = " + task.getId();;
     	PreparedStatement preparedStatement = getPreparedStatement(query);
     	preparedStatement.setDouble(1, task.getWidth());
         preparedStatement.setDouble(2, task.getHeight());
         preparedStatement.setDouble(3, task.getXPosition());
         preparedStatement.setDouble(4, task.getYPosition());
         preparedStatement.setString(5, task.getOnlyColor());
+        preparedStatement.setString(6, task.getStatus());
         // Execute and close.
         preparedStatement.execute();
         preparedStatement.close();
