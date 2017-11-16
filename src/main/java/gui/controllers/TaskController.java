@@ -7,6 +7,7 @@ import main.java.interfaces.RunnableTask;
 import main.java.interfaces.WindowState;
 import javafx.event.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -25,6 +26,8 @@ public class TaskController implements WindowState {
 	@FXML private TextArea textTextAreaBody, reminderTextAreaBody;
 
 	@FXML private TabPane tabPane;
+
+	@FXML private ColorPicker reminderColorPicker, textColorPicker;
 
 	private TaskManager taskManager;
 
@@ -63,15 +66,17 @@ public class TaskController implements WindowState {
 		}
 		try {
 			int selectedTab = tabPane.getSelectionModel().getSelectedIndex();
-			String title = null, description = null;
+			String title = null, description = null, color = "#";
 			switch (selectedTab) {
 				case 0:
 					title = textTextFieldTitle.getText();
 					description = textTextAreaBody.getText();
+					color = color + textColorPicker.getValue().toString().substring(2);
 					break;
 				case 1:
 					title = reminderTextFieldTitle.getText();
 					description = reminderTextAreaBody.getText();
+					color = color + reminderColorPicker.getValue().toString().substring(2);
 					break;
 				default:
 					break;
@@ -90,11 +95,12 @@ public class TaskController implements WindowState {
 						taskManager.getTaskHandler().addTask(task);
 					}
 
-				}).performInsertTask(taskManager.getFolderId(), title, description, Task.DEFAULT_COLOR, Task.DEFAULT_WIDTH, Task.DEFAULT_HEIGHT, Task.DEFAULT_POSITION, Task.DEFAULT_POSITION, "Activa", LocalDateTime.now(), isReminder ? reminderTextFieldDate.getLocalDateTime() : null);
+				}).performInsertTask(taskManager.getFolderId(), title, description, color, Task.DEFAULT_WIDTH, Task.DEFAULT_HEIGHT, Task.DEFAULT_POSITION, Task.DEFAULT_POSITION, "Activa", LocalDateTime.now(), isReminder ? reminderTextFieldDate.getLocalDateTime() : null);
 			} else {
 				Task task = taskManager.getTask();
 				task.setTitle(title);
 				task.setDescription(description);
+				task.setColor(color);
 				if (isReminder) {
 					task.setReminderDate(reminderTextFieldDate.getLocalDateTime());
 				}
@@ -121,6 +127,9 @@ public class TaskController implements WindowState {
 		Utils.closeWindow(event);
 	}
 
+	@FXML public void change(ActionEvent event){
+
+	}
 	private boolean isValidData() {
 		int selectedTab = tabPane.getSelectionModel().getSelectedIndex();
 		switch (selectedTab) {
