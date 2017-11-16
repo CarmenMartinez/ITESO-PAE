@@ -67,9 +67,6 @@ public class FolderCell extends ListCell<Folder> {
 
 			public void handle(ActionEvent event) {
 				folderHandler.onFolderSelected(folder);
-
-
-
 				folderHandler.onFolderSelectedCompletedTasks(folder);
 
 			}

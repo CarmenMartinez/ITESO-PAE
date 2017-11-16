@@ -398,7 +398,6 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	@Override
 
 	public ObservableList<Folder> getFoldersFFH() {
-		// TODO Auto-generated method stub
 		return this.folders;
 	}
 
