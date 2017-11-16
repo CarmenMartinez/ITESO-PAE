@@ -95,7 +95,7 @@ public class TaskController implements WindowState {
 						taskManager.getTaskHandler().addTask(task);
 					}
 
-				}).performInsertTask(taskManager.getFolderId(), title, description, color, Task.DEFAULT_WIDTH, Task.DEFAULT_HEIGHT, Task.DEFAULT_POSITION, Task.DEFAULT_POSITION, bundle.getString("Pending resolution"), LocalDateTime.now(), isReminder ? reminderTextFieldDate.getLocalDateTime() : null);
+				}).performInsertTask(taskManager.getFolderId(), title, description, color, Task.DEFAULT_WIDTH, Task.DEFAULT_HEIGHT, Task.DEFAULT_POSITION, Task.DEFAULT_POSITION, bundle.getString("task_pending"), LocalDateTime.now(), isReminder ? reminderTextFieldDate.getLocalDateTime() : null);
 			} else {
 				Task task = taskManager.getTask();
 				task.setTitle(title);
