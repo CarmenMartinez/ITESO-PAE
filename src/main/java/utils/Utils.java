@@ -83,6 +83,9 @@ public class Utils {
 	public static void showError(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setHeaderText(message);
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.setAlwaysOnTop(true);
+		stage.toFront(); // not sure if necessary
 		alert.show();
 	}
 

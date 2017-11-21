@@ -200,6 +200,17 @@ public class ThreadHandler {
 		});
 	}
 
+	public void performUpdateFolderInfo(Folder folder) throws InterruptedException, ExecutionException, ThreadHandlerException {
+		performAction(new Callable<Folder>() {
+
+			@Override
+			public Folder call() throws Exception {
+				return DBHandler.updateFolderInfo(folder);
+			}
+
+		});
+	}
+
 	private User getUserWithSocket() {
 		ServerSocket server = null;
 		Socket clientSocket = null;

@@ -81,7 +81,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	    		onFolderSelected(folders.get(0));
 	    		onFolderSelectedCompletedTasks(folders.get(0));
 	    	}
-	    	
+
 	}
 
 	@FXML public void addFolder(ActionEvent event) {
@@ -170,15 +170,15 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		else{
 			status.setSelected(true);
 		}
-		
-		
+
+
 		tp = new Tooltip();
 		if (task.isReminder()) {
 			tp.setText(task.getStatus() + "\n" + "Fecha: " + task.getReminderDate().toString());
 		} else {
 			tp.setText(task.getStatus());
 		}
-		
+
 		status.setOnAction((event) -> {
 			onStatusChanged(task, status.isSelected());
 		});
@@ -243,7 +243,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		ScrollPane scroll = (ScrollPane) window.getContentPane().getChildren().get(0);
 		scroll.setStyle("-fx-background:" + task.getOnlyColor());
 	}
-	
+
 	private void refreshAnchorPane(Folder folder) {
 		anchorPaneTasks.getChildren().clear();
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
@@ -254,7 +254,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 				anchorPaneTasks.getChildren().add(createTaskUI(task));
 		});
 	}
-	
+
 	private void refreshAnchorPaneCompletedTasks(Folder folder) {
 		anchorPaneCompletedTasks.getChildren().clear();
 		ResourceBundle bundle = ResourceBundle.getBundle("i18n/task");
@@ -302,14 +302,14 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 					foldert.button.setStyle("-fx-background-color: #D8D8D8;");
 				}
 				catch(NullPointerException e){
-				
+
 				}
 			}else{
 				try{
 					foldert.button.setStyle("-fx-background-color: #999999;");
 				}
 				catch(NullPointerException e){
-				
+
 				}
 			}
 		}
@@ -327,7 +327,7 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 						}
 						folder.setTasks((ObservableList<Task>) response);
 						refreshAnchorPane(folder);
-						
+
 					}
 
 				}).performGetFolderTasks(folder.getId());
@@ -385,14 +385,14 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 	public void onFolderRemoved(Folder folder) {
 		folders.remove(folder);
 		folder.setFavorite(false);
-		addFolder(folder);
+		updateFolder(folder);
 	}
 
 	@Override
 	public void onFolderAdded(Folder folder) {
 		folders.remove(folder);
 		folder.setFavorite(true);
-		addFolder(folder);
+		updateFolder(folder);
 	}
 
 	@Override
@@ -409,8 +409,8 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 		}
 		else{
 	 			task.setStatus(bundle.getString("task_pending"));
-	 	}	
-		refreshAnchorPane(currentFolder); 	
+	 	}
+		refreshAnchorPane(currentFolder);
 		refreshAnchorPaneCompletedTasks(currentFolder);
 	}
 
@@ -431,9 +431,9 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 			}).performDeleteTask(task);
 		} catch (InterruptedException | ExecutionException | ThreadHandlerException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
-	
+
 
 	@Override
 	public void onFolderSelectedCompletedTasks(Folder folder) {
@@ -464,7 +464,24 @@ public class HomeController implements WindowState, FolderHandler, TasksHandler 
 			refreshAnchorPaneCompletedTasks(folder);
 		}
 	}
-	 
 
+	private void updateFolder(Folder folder) {
+		try {
+			ThreadHandler.getInstance().setRunnableTask(new RunnableTask() {
+
+				@Override
+				public void onFinish(Object response) {
+					if (response == null) {
+						ResourceBundle bundle = ResourceBundle.getBundle("i18n/home");
+						Utils.showError(bundle.getString("error_folder"));
+					}
+					addFolder(folder);
+				}
+			}).performUpdateFolderInfo(folder);
+		} catch (InterruptedException | ExecutionException | ThreadHandlerException e1) {
+			e1.printStackTrace();
+		}
+
+	}
 
 }

@@ -324,4 +324,14 @@ public class DBHandler {
         return task;
     }
 
+    public static Folder updateFolderInfo(Folder folder) throws SQLException {
+    	String query = "UPDATE Folder SET isFavorite = ? WHERE id = " + folder.getId();
+    	PreparedStatement preparedStatement = getPreparedStatement(query);
+    	preparedStatement.setInt(1, folder.isFavorite() ? 1 : 0);
+        // Execute and close.
+        preparedStatement.execute();
+        preparedStatement.close();
+        return folder;
+    }
+
 }
